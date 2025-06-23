@@ -5,7 +5,7 @@ import "../styles/home.css";
 function Home({ user }) {
   return (
     <div className="home">
-      <h1>Welcome to the Marketplace</h1>
+      {/* <h1>Welcome to the Marketplace</h1> */}
       <p>Buy and sell products with ease</p>
 
       {!user && (
