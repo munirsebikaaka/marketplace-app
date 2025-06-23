@@ -1,0 +1,222 @@
+/* :root {
+
+  --color-primary: #1a73e8;
+  --color-primary-hover: #1669c1;
+  --color-primary-light: #e8f0fe;
+  --color-accent: #34a853;
+
+
+  --color-secondary: #fbbc05;
+  --color-secondary-light: #fef7e0;
+  --color-info: #4285f4;
+  --color-warning: #f2994a;
+  --color-error: #ea4335;
+  --color-success: #34a853;
+
+
+  --neutral-100: #ffffff;
+  --neutral-200: #f3f4f6;
+  --neutral-300: #e5e7eb;
+  --neutral-400: #d1d5db;
+  --neutral-500: #9ca3af;
+  --neutral-600: #6b7280;
+  --neutral-700: #374151;
+  --neutral-800: #1f2937;
+  --neutral-900: #111827;
+
+  
+  --max-width: 120rem;
+
+  --font-family: Outfit;
+
+
+  --font-xs: 1.2rem;
+  --font-sm: 1.4rem;
+  --font-lg: 1.8rem;
+  --font-xl: 2rem;
+  --font-2xl: 2.4rem;
+
+
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+
+  
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-full: 9999px;
+
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+}
+
+html {
+  font-size: 62.5%;
+}
+
+.button {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-base);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--border-radius-md);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.button-primary {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+.button-primary:hover {
+  background-color: var(--btn-primary-hover);
+}
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+  background-color: var(--neutral-200);
+} */
+/* App.css */
+:root {
+  /* 60-30-10 Color Palette */
+  --primary-60: #2c3e50; /* Dominant color (60%) - Navy blue */
+  --secondary-30: #3498db; /* Secondary color (30%) - Blue */
+  --accent-10: #e74c3c; /* Accent color (10%) - Red */
+
+  /* Neutral Colors */
+  --white: #ffffff;
+  --light-gray: #f5f7fa;
+  --medium-gray: #e0e4e8;
+  --dark-gray: #95a5a6;
+  --text-dark: #2d3436;
+
+  /* Spacing */
+  --space-unit: 8px;
+  --space-xxs: calc(0.25 * var(--space-unit));
+  --space-xs: calc(0.5 * var(--space-unit));
+  --space-sm: var(--space-unit);
+  --space-md: calc(2 * var(--space-unit));
+  --space-lg: calc(3 * var(--space-unit));
+  --space-xl: calc(4 * var(--space-unit));
+  --space-xxl: calc(6 * var(--space-unit));
+
+  /* Typography */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-md: 1.25rem; /* 20px */
+  --font-size-lg: 1.5rem; /* 24px */
+  --font-size-xl: 2rem; /* 32px */
+
+  --line-height-sm: 1.25;
+  --line-height-md: 1.5;
+
+  /* Borders */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-width: 1px;
+  --border-color: var(--medium-gray);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-medium: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Outfit, sans-serif;
+  line-height: var(--line-height-md);
+  color: var(--text-dark);
+  background-color: var(--light-gray);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--primary-60);
+}
+
+h1 {
+  font-size: var(--font-size-xl);
+}
+h2 {
+  font-size: var(--font-size-lg);
+}
+h3 {
+  font-size: var(--font-size-md);
+}
+h4 {
+  font-size: var(--font-size-base);
+}
+
+a {
+  text-decoration: none;
+  color: var(--secondary-30);
+  font-family: var(--font-family);
+}
+
+/* Layout */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.section {
+  padding: var(--space-xl) 0;
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+.mt-sm {
+  margin-top: var(--space-sm);
+}
+.mt-md {
+  margin-top: var(--space-md);
+}
+.mt-lg {
+  margin-top: var(--space-lg);
+}
+.mb-sm {
+  margin-bottom: var(--space-sm);
+}
+.mb-md {
+  margin-bottom: var(--space-md);
+}
+.mb-lg {
+  margin-bottom: var(--space-lg);
+}

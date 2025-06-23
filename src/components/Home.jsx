@@ -1,0 +1,36 @@
+import { Link } from "react-router-dom";
+
+import "../styles/home.css";
+
+function Home({ user }) {
+  return (
+    <div className="home">
+      <h1>Welcome to the Marketplace</h1>
+      <p>Buy and sell products with ease</p>
+
+      {!user && (
+        <div className="auth-actions">
+          <Link to="/login" className="btn">
+            Login
+          </Link>
+          <Link to="/signup" className="btn">
+            Sign Up
+          </Link>
+        </div>
+      )}
+
+      <div className="actions">
+        <Link to="/products" className="btn">
+          Browse Products
+        </Link>
+        {user?.role === "seller" && (
+          <Link to="/seller" className="btn">
+            Seller Dashboard
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default Home;

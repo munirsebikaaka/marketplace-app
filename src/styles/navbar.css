@@ -1,0 +1,142 @@
+/* === Navbar Container === */
+.navbar {
+  background-color: var(--primary-60);
+  color: var(--white);
+  padding: var(--space-sm) var(--space-lg);
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* === Layout Wrapper === */
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* === Brand === */
+.navbar-brand .link {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  color: var(--white);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.navbar-brand .link:hover {
+  color: var(--secondary-30);
+}
+
+/* === Nav Links === */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.link {
+  color: var(--white);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--border-radius-sm);
+  transition: background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.link:hover {
+  background-color: var(--secondary-30);
+  color: var(--white);
+}
+
+/* === Logout Button === */
+.logout-btn {
+  background-color: var(--accent-10);
+  color: var(--white);
+  border: none;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+  transform: translateY(-1px);
+}
+
+.menu-icon,
+.close-icon {
+  display: none;
+}
+
+/* === Responsive Behavior === */
+
+/* Tablet and Down */
+@media (max-width: 1024px) {
+  .navbar-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    width: 100%;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+  }
+
+  .link,
+  .logout-btn {
+    width: 100%;
+    text-align: left;
+  }
+  .menu-icon,
+  .close-icon {
+    display: block;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--white);
+    margin-left: auto;
+  }
+
+  .navbar-links {
+    display: none;
+  }
+
+  .navbar-links.show {
+    display: flex;
+  }
+}
+
+/* Show/Hide menu toggle for tablet and down */
+@media (max-width: 1024px) {
+}
+
+/* By default (desktop), hide icons */
+
+/* Very Small Devices */
+@media (max-width: 480px) {
+  .navbar {
+    padding: var(--space-sm);
+  }
+
+  .navbar-brand .link {
+    font-size: var(--font-size-md);
+  }
+
+  .link,
+  .logout-btn {
+    font-size: var(--font-size-sm);
+    padding: var(--space-xs) var(--space-sm);
+  }
+}

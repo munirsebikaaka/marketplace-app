@@ -1,0 +1,88 @@
+.home {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg);
+  text-align: center;
+  background-color: var(--light-gray);
+  color: var(--text-dark);
+}
+
+.home h1 {
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--space-md);
+  color: var(--primary-60);
+  line-height: var(--line-height-md);
+}
+
+.home p {
+  font-size: var(--font-size-base);
+  color: var(--dark-gray);
+  margin-bottom: var(--space-lg);
+}
+
+/* Shared Button Styles */
+.btn {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  color: var(--white);
+  background-color: var(--secondary-30);
+  transition: background-color var(--transition-fast),
+    transform var(--transition-fast);
+  margin: var(--space-xs);
+}
+
+.btn:hover {
+  background-color: #2980b9; /* Darker secondary */
+  transform: translateY(-2px);
+}
+
+/* Alternate Button (for Seller Dashboard) */
+.home .btn:nth-of-type(2n) {
+  background-color: var(--accent-10);
+}
+
+.home .btn:nth-of-type(2n):hover {
+  background-color: #c0392b;
+}
+
+/* Auth Actions */
+.auth-actions {
+  margin-bottom: var(--space-lg);
+}
+
+/* Main Actions */
+.actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .home {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .home h1 {
+    font-size: var(--font-size-lg);
+  }
+
+  .home p {
+    font-size: var(--font-size-sm);
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}

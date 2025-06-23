@@ -1,0 +1,78 @@
+:root {
+  --primary-color: #4361ee;
+  --primary-light: #4895ef;
+  --secondary-color: #3f37c9;
+  --text-color: #333;
+  --bg-color: #f8f9fa;
+  --sidebar-bg: #ffffff;
+  --chat-bg: #f1f3f5;
+  --message-bg: #ffffff;
+  --message-user-bg: #4361ee;
+  --message-text: #333;
+  --message-user-text: #ffffff;
+  --border-color: #e9ecef;
+  --input-bg: #ffffff;
+  --icon-color: #6c757d;
+}
+
+.dark-mode {
+  --primary-color: #4361ee;
+  --primary-light: #4895ef;
+  --secondary-color: #3f37c9;
+  --text-color: #f8f9fa;
+  --bg-color: #121212;
+  --sidebar-bg: #1e1e1e;
+  --chat-bg: #121212;
+  --message-bg: #2d2d2d;
+  --message-user-bg: #4361ee;
+  --message-text: #e1e1e1;
+  --message-user-text: #ffffff;
+  --border-color: #333;
+  --input-bg: #2d2d2d;
+  --icon-color: #a1a1a1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  height: 100vh;
+}
+
+.app-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    display: none;
+  }
+
+  .sidebar.active {
+    display: flex;
+  }
+
+  .chat-area {
+    display: none;
+  }
+
+  .chat-area.active {
+    display: flex;
+  }
+}
