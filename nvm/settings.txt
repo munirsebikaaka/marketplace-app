@@ -1,0 +1,2 @@
+root: C:\Users\25675\Desktop\marketplaceapp\nvm
+path: C:\nvm4w\nodejs\node_modules\npm\nodejs
