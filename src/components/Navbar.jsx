@@ -13,7 +13,7 @@ const Navbar = ({ user, cartCount, onLogout }) => {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-brand">
-          <Link className="link" to="/">
+          <Link className="link" to="/" onClick={handleMenuClose}>
             Marketplace
           </Link>
         </div>
@@ -30,6 +30,14 @@ const Navbar = ({ user, cartCount, onLogout }) => {
                   Seller Dashboard
                 </Link>
               )}
+              <Link
+                className="link"
+                to="/yourproduct"
+                onClick={handleMenuClose}
+              >
+                Your Products
+              </Link>
+
               <Link className="link" to="/cart" onClick={handleMenuClose}>
                 Cart ({cartCount})
               </Link>

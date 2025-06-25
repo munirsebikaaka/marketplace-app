@@ -17,6 +17,7 @@ import Checkout from "./components/Checkout";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "./firebase";
 import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
+import YourProducts from "./components/YourProducts";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -196,6 +197,7 @@ function App() {
                   />
                 }
               />
+              <Route path="/yourproduct" element={<YourProducts />} />
               <Route
                 path="/checkout"
                 element={

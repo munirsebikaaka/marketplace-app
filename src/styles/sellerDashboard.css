@@ -5,6 +5,7 @@
   background-color: var(--light-gray);
   font-family: sans-serif;
   color: var(--text-dark);
+  font-family: Outfit;
 }
 
 /* Header */
@@ -92,6 +93,7 @@ textarea {
   font-weight: 600;
   transition: background-color var(--transition-medium),
     transform var(--transition-fast);
+  font-family: Outfit;
 }
 
 .upload-btn {
@@ -168,6 +170,7 @@ textarea {
   padding: var(--space-md);
   display: flex;
   flex-direction: column;
+
   gap: var(--space-sm);
 }
 
@@ -181,6 +184,7 @@ textarea {
   font-size: var(--font-size-sm);
   margin: 0;
   line-height: 1.5;
+  text-align: center;
 }
 
 .product-actions {
@@ -196,6 +200,8 @@ textarea {
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   transition: background-color var(--transition-fast);
+  font-family: Outfit;
+  width: 100%;
 }
 
 .btn-edit {

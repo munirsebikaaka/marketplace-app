@@ -29,7 +29,7 @@
 }
 
 .navbar-brand .link:hover {
-  color: var(--secondary-30);
+  color: var(--white);
 }
 
 /* === Nav Links === */
@@ -84,7 +84,7 @@
 /* Tablet and Down */
 @media (max-width: 1024px) {
   .navbar-container {
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
   }
 

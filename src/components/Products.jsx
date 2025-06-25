@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../styles/productCard.css";
 import { collection, onSnapshot } from "firebase/firestore";
-import { db } from "../firebase"; // adjust this path if needed
+import { db } from "../firebase";
 
 function Products({ user, onAddToCart }) {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
@@ -15,9 +16,10 @@ function Products({ user, onAddToCart }) {
         ...doc.data(),
       }));
       setProducts(productList);
+      setLoading(false);
     });
 
-    return unsubscribe; // clean up listener on unmount
+    return unsubscribe;
   }, []);
 
   const filteredProducts = products.filter(
@@ -39,69 +41,71 @@ function Products({ user, onAddToCart }) {
         />
       </div>
 
-      <div className="products-grid">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
-            <div key={product.id} className="product-card">
-              {/* 
-              // Image section skipped — you can re-enable later if needed
-              {product.image && (
+      {loading ? (
+        <p>Loading products...</p>
+      ) : (
+        <div className="products-grid">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <div key={product.id} className="product-card">
                 <img
-                  src={product.image}
-                  alt={product.name}
+                  src={"def.jpg"}
+                  alt={"default data"}
                   className="product-image"
                 />
-              )}
-              */}
 
-              <div className="seller-product-card">
-                <h3 className="product-title">{product.name}</h3>
-                <p className="product-description">{product.description}</p>
-                <p className="product-price">
-                  Price: ${product.price.toFixed(2)}
-                </p>
+                <div className="seller-product-card">
+                  <h3 className="product-title">{product.name}</h3>
+                  <p className="product-description">{product.description}</p>
+                  <p className="product-price">
+                    Price: ${product.price.toFixed(2)}
+                  </p>
 
-                {product.reviews && product.reviews.length > 0 && (
-                  <div className="reviews-summary">
-                    <span>
-                      Rating:{" "}
-                      {(
-                        product.reviews.reduce(
-                          (sum, review) => sum + review.rating,
-                          0
-                        ) / product.reviews.length
-                      ).toFixed(1)}
-                      /5
-                    </span>
-                    <span>({product.reviews.length} reviews)</span>
+                  {product.reviews && product.reviews.length > 0 && (
+                    <div className="reviews-summary">
+                      <span>
+                        Rating:
+                        {(
+                          product.reviews.reduce(
+                            (sum, review) => sum + review.rating,
+                            0
+                          ) / product.reviews.length
+                        ).toFixed(1)}
+                        /5
+                      </span>
+                      <span>({product.reviews.length} reviews)</span>
+                    </div>
+                  )}
+
+                  <div className="product-further-links">
+                    <button
+                      className="btn-product btn-primary"
+                      onClick={() => onAddToCart(product)}
+                      disabled={!user || user.role === "seller"}
+                    >
+                      Add to Cart
+                    </button>
+
+                    <Link
+                      to={`/product/${product.id}`}
+                      className="view-details"
+                    >
+                      View Details
+                    </Link>
                   </div>
-                )}
-
-                <div className="product-further-links">
-                  <button
-                    className="btn-product btn-primary"
-                    onClick={() => onAddToCart(product)}
-                    disabled={!user || user.role === "seller"}
-                  >
-                    Add to Cart
-                  </button>
-
-                  <Link to={`/product/${product.id}`} className="view-details">
-                    View Details
-                  </Link>
                 </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p>
-            No products found.{" "}
-            {user?.role === "seller" && (
-              <Link to="/seller">Add some products</Link>
-            )}
-          </p>
-        )}
-      </div>
+            ))
+          ) : (
+            <p>
+              No products found.{" "}
+              {user?.role === "seller" && (
+                <Link to="/seller">Add some products</Link>
+              )}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
