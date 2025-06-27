@@ -1,23 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { addDoc, updateDoc, collection, doc } from "firebase/firestore";
 import { db } from "../firebase";
 
 // import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// const storage = getStorage(); // Initialize storage if using image upload
+// const storage = getStorage(); // Uncomment if using image upload
 
-function SellerForm({ user, editingProduct, setEditingProduct }) {
+// Import UserContext
+import { UserContext } from "../contexts/UserContext";
+
+function SellerForm({ editingProduct, setEditingProduct }) {
+  // Get user from UserContext instead of props
+  const { user } = useContext(UserContext);
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     price: "",
     imageUrl: "",
-    imageFile: null, // Will hold the selected image file
+    imageFile: null,
   });
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Populate form for editing
   useEffect(() => {
     if (editingProduct) {
       setFormData({
@@ -39,36 +44,31 @@ function SellerForm({ user, editingProduct, setEditingProduct }) {
     setErrors({});
   }, [editingProduct]);
 
-  // Handle field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle image file input and preview
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setFormData((prev) => ({
         ...prev,
         imageFile: file,
-        imageUrl: URL.createObjectURL(file), // Preview only
+        imageUrl: URL.createObjectURL(file),
       }));
     }
   };
 
-  // Validate fields
   const validateForm = () => {
     const newErrors = {};
 
     if (!formData.name.trim()) {
       newErrors.name = "Product name is required";
     }
-
     if (!formData.description.trim()) {
       newErrors.description = "Description is required";
     }
-
     if (
       !formData.price ||
       isNaN(formData.price) ||
@@ -77,17 +77,11 @@ function SellerForm({ user, editingProduct, setEditingProduct }) {
       newErrors.price = "Price must be a positive number";
     }
 
-    // Optional: Require image for new products
-    // if (!formData.imageUrl && !formData.imageFile && !editingProduct) {
-    //   newErrors.image = "Product image is required";
-    // }
-
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
   };
 
-  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -97,14 +91,17 @@ function SellerForm({ user, editingProduct, setEditingProduct }) {
       setIsSubmitting(true);
       let imageUrl = formData.imageUrl;
 
-      // 🔒 IMAGE UPLOAD LOGIC (currently commented out)
+      // Uncomment and update this block if you want to handle image uploads
       /*
       if (formData.imageFile) {
-        const imageRef = ref(storage, `product-images/${Date.now()}_${formData.imageFile.name}`);
+        const imageRef = ref(
+          storage,
+          `product-images/${Date.now()}_${formData.imageFile.name}`
+        );
         await uploadBytes(imageRef, formData.imageFile);
         imageUrl = await getDownloadURL(imageRef);
       }
-      */
+        */
 
       const data = {
         name: formData.name.trim(),
@@ -225,7 +222,7 @@ function SellerForm({ user, editingProduct, setEditingProduct }) {
             : "Add Product"}
         </button>
 
-        {/* Cancel Button (Edit Mode Only) */}
+        {/* Cancel Button */}
         {editingProduct && (
           <button
             type="button"

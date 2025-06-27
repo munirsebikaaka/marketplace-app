@@ -1,27 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import "../styles/productCard.css";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 
-function Products({ user, onAddToCart }) {
+// Import contexts to get global user and cart actions
+import { UserContext } from "../contexts/UserContext";
+import { CartContext } from "../contexts/CartContext";
+
+function Products() {
+  // Access the logged-in user from global UserContext
+  const { user } = useContext(UserContext);
+
+  // Access addToCart function from CartContext to add products to cart
+  const { addToCart } = useContext(CartContext);
+
+  // Local state for products list, loading state, and search term
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Listen to real-time updates on 'products' collection from Firestore
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
+      // Map Firestore docs into product objects
       const productList = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
+
       setProducts(productList);
       setLoading(false);
     });
 
+    // Cleanup listener on component unmount
     return unsubscribe;
   }, []);
 
+  // Filter products based on search term in name or description
   const filteredProducts = products.filter(
     (product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -32,6 +48,7 @@ function Products({ user, onAddToCart }) {
     <div className="products">
       <h2>Products</h2>
 
+      {/* Search input to filter products */}
       <div className="search-bar">
         <input
           type="text"
@@ -48,6 +65,13 @@ function Products({ user, onAddToCart }) {
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <div key={product.id} className="product-card">
+                {/* Placeholder image */}
+                {/* <img
+                  src={product.imageUrl || "def.jpg"}
+                  alt={product.name}
+                  className="product-image"
+                /> */}
+
                 <img
                   src={"def.jpg"}
                   alt={"default data"}
@@ -61,10 +85,11 @@ function Products({ user, onAddToCart }) {
                     Price: ${product.price.toFixed(2)}
                   </p>
 
+                  {/* Show rating summary if reviews exist */}
                   {product.reviews && product.reviews.length > 0 && (
                     <div className="reviews-summary">
                       <span>
-                        Rating:
+                        Rating:{" "}
                         {(
                           product.reviews.reduce(
                             (sum, review) => sum + review.rating,
@@ -77,10 +102,12 @@ function Products({ user, onAddToCart }) {
                     </div>
                   )}
 
+                  {/* Buttons for adding to cart and viewing details */}
                   <div className="product-further-links">
                     <button
                       className="btn-product btn-primary"
-                      onClick={() => onAddToCart(product)}
+                      onClick={() => addToCart(product)}
+                      // Disable button if user is not logged in or user is a seller
                       disabled={!user || user.role === "seller"}
                     >
                       Add to Cart
@@ -99,6 +126,7 @@ function Products({ user, onAddToCart }) {
           ) : (
             <p>
               No products found.{" "}
+              {/* If user is a seller, suggest adding products */}
               {user?.role === "seller" && (
                 <Link to="/seller">Add some products</Link>
               )}

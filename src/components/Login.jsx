@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import {
@@ -9,36 +9,34 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
-import { auth, db } from "../firebase"; // Make sure this path is correct
+import { auth, db } from "../firebase";
 import "../styles/auth.css";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import Spinner from "./Spiner";
+import { UserContext } from "../contexts/UserContext";
 
-function Login({ onLogin }) {
-  // Form input values
+function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-
-  // Error and loading states
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  // Update form values
+  const { setUser } = useContext(UserContext); // ✅ Use setUser from context
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle login form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      // Step 1: Check if email exists in the Firestore "users" collection
+      // ✅ Step 1: Check if email exists
       const usersRef = collection(db, "users");
       const emailQuery = query(usersRef, where("email", "==", formData.email));
       const emailSnapshot = await getDocs(emailQuery);
@@ -46,10 +44,10 @@ function Login({ onLogin }) {
       if (emailSnapshot.empty) {
         setError("This email is not registered. Please check or sign up.");
         setLoading(false);
-        return; // Stop here if email is not found
+        return;
       }
 
-      // Step 2: Sign in with Firebase Authentication
+      // ✅ Step 2: Sign in with Firebase Auth
       const userCredential = await signInWithEmailAndPassword(
         auth,
         formData.email,
@@ -58,7 +56,7 @@ function Login({ onLogin }) {
 
       const user = userCredential.user;
 
-      // Step 3: Fetch user's extra data from Firestore using UID
+      // ✅ Step 3: Get user profile from Firestore
       const userDoc = await getDoc(doc(db, "users", user.uid));
 
       if (!userDoc.exists()) {
@@ -69,20 +67,16 @@ function Login({ onLogin }) {
 
       const userData = userDoc.data();
 
-      // Step 4: Pass user data to parent
-      if (onLogin) {
-        onLogin({
-          uid: user.uid,
-          name: userData.name,
-          email: userData.email,
-          role: userData.role,
-        });
-      }
+      // ✅ Step 4: Set user in global context
+      setUser({
+        uid: user.uid,
+        ...userData,
+      });
 
-      // Step 5: Redirect to home
+      // ✅ Step 5: Navigate to home
       navigate("/");
     } catch (err) {
-      console.error("Login error code:", err.code); // Check exact Firebase error
+      console.error("Login error code:", err.code);
 
       if (err.code === "auth/invalid-credential") {
         setError("Incorrect password. Please try again.");
@@ -96,7 +90,7 @@ function Login({ onLogin }) {
         setError("Login failed. Please try again.");
       }
     } finally {
-      setLoading(false); // Always turn off loading at the end
+      setLoading(false);
     }
   };
 
@@ -132,7 +126,6 @@ function Login({ onLogin }) {
                 onChange={handleChange}
                 required
               />
-
               {!showPassword ? (
                 <IoEyeOff
                   className="showpassword-login"

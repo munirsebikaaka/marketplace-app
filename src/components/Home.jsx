@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
 
 import "../styles/home.css";
+import { UserContext } from "../contexts/UserContext";
 
-function Home({ user }) {
+function Home() {
+  const { user } = useContext(UserContext);
+
   return (
     <div className="home">
       <h1>Welcome to the Marketplace</h1>
@@ -34,5 +38,6 @@ function Home({ user }) {
 }
 
 export default Home;
+
 //npm run build
 // firebase deploy

@@ -1,7 +1,13 @@
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "../styles/cart.css";
+import { CartContext } from "../contexts/CartContext"; // Adjust the path if needed
 
-function Cart({ cart, onUpdateQuantity, onRemove }) {
+function Cart() {
+  // Access cart data and functions directly from CartContext
+  const { cart, updateQuantity, removeFromCart } = useContext(CartContext);
+
+  // Helper function to calculate the total price of the cart items
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
@@ -10,6 +16,7 @@ function Cart({ cart, onUpdateQuantity, onRemove }) {
     <div className="cart-container">
       <h2 className="cart-header">Your Shopping Cart</h2>
 
+      {/* Show a message if the cart is empty */}
       {cart.length === 0 ? (
         <div className="empty-cart">
           <p>Your cart is empty</p>
@@ -19,6 +26,7 @@ function Cart({ cart, onUpdateQuantity, onRemove }) {
         </div>
       ) : (
         <>
+          {/* List all cart items */}
           <div className="cart-items">
             {cart.map((item) => (
               <div key={item.id} className="cart-item">
@@ -27,25 +35,32 @@ function Cart({ cart, onUpdateQuantity, onRemove }) {
                   <p className="item-price">Price: ${item.price.toFixed(2)}</p>
                 </div>
                 <div className="item-quantity">
+                  {/* Decrease quantity button */}
                   <button
                     className="quantity-btn"
-                    onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
                   >
                     -
                   </button>
+
+                  {/* Current quantity */}
                   <span>{item.quantity}</span>
+
+                  {/* Increase quantity button */}
                   <button
                     className="quantity-btn"
-                    onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
                   >
                     +
                   </button>
                 </div>
                 <div className="item-total">
-                  ${(item.price * item.quantity).toFixed(2)}
+                  {/* Total price for this item */}$
+                  {(item.price * item.quantity).toFixed(2)}
                 </div>
+                {/* Remove item button */}
                 <button
-                  onClick={() => onRemove(item.id)}
+                  onClick={() => removeFromCart(item.id)}
                   className="remove-btn"
                 >
                   Remove
@@ -54,6 +69,7 @@ function Cart({ cart, onUpdateQuantity, onRemove }) {
             ))}
           </div>
 
+          {/* Order summary section */}
           <div className="summary-card">
             <h3 className="summary-title">Order Summary</h3>
             <div className="summary-row">
@@ -69,6 +85,7 @@ function Cart({ cart, onUpdateQuantity, onRemove }) {
               <span>${calculateTotal().toFixed(2)}</span>
             </div>
 
+            {/* Link to checkout page */}
             <Link to="/checkout" className="btn checkout-btn">
               Proceed to Checkout
             </Link>

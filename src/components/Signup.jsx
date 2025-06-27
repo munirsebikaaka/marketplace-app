@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -6,8 +6,9 @@ import { auth, db } from "../firebase";
 import "../styles/auth.css";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import Spinner from "./Spiner";
+import { UserContext } from "../contexts/UserContext";
 
-function Signup({ onLogin }) {
+function Signup() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -20,7 +21,8 @@ function Signup({ onLogin }) {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // Handle input changes
+  const { setUser } = useContext(UserContext); // Get setUser from context
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -29,7 +31,6 @@ function Signup({ onLogin }) {
     }));
   };
 
-  // Show readable error messages
   const getFriendlyError = (code) => {
     if (code === "auth/email-already-in-use") {
       return "This email is already registered.";
@@ -43,11 +44,9 @@ function Signup({ onLogin }) {
     return "Something went wrong. Please try again.";
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (
       formData.name === "" ||
       formData.email === "" ||
@@ -66,7 +65,6 @@ function Signup({ onLogin }) {
     setError("");
 
     try {
-      // Create user in Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
@@ -74,7 +72,6 @@ function Signup({ onLogin }) {
       );
       const user = userCredential.user;
 
-      // Save user data in Firestore
       await setDoc(doc(db, "users", user.uid), {
         name: formData.name,
         email: formData.email,
@@ -82,15 +79,13 @@ function Signup({ onLogin }) {
         createdAt: new Date().toISOString(),
       });
 
-      // Call onLogin if provided
-      if (onLogin) {
-        onLogin({
-          uid: user.uid,
-          name: formData.name,
-          email: formData.email,
-          role: formData.role,
-        });
-      }
+      // Update global user state in context
+      setUser({
+        uid: user.uid,
+        name: formData.name,
+        email: formData.email,
+        role: formData.role,
+      });
 
       navigate("/"); // Redirect after signup
     } catch (err) {

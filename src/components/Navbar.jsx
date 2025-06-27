@@ -1,13 +1,29 @@
 import { Link } from "react-router-dom";
 import "../styles/navbar.css";
 import { IoClose, IoMenu } from "react-icons/io5";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../contexts/UserContext"; // ✅ import context
+import { CartContext } from "../contexts/CartContext"; // ✅ optional if you track cart count
 
-const Navbar = ({ user, cartCount, onLogout }) => {
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { user, handleLogout } = useContext(UserContext); // ✅ using logout from context
+  const { cart } = useContext(CartContext); // optional, if using CartContext
+  const cartCount =
+    cart?.reduce((total, item) => total + item.quantity, 0) || 0;
 
   const handleMenuOpen = () => setIsMenuOpen(true);
   const handleMenuClose = () => setIsMenuOpen(false);
+
+  const onLogoutClick = () => {
+    try {
+      handleLogout(); // ✅ correct usage
+      handleMenuClose();
+    } catch (err) {
+      console.error("Logout error:", err.message);
+    }
+  };
 
   return (
     <nav className="navbar">
@@ -30,6 +46,7 @@ const Navbar = ({ user, cartCount, onLogout }) => {
                   Seller Dashboard
                 </Link>
               )}
+
               <Link
                 className="link"
                 to="/yourproduct"
@@ -41,13 +58,8 @@ const Navbar = ({ user, cartCount, onLogout }) => {
               <Link className="link" to="/cart" onClick={handleMenuClose}>
                 Cart ({cartCount})
               </Link>
-              <button
-                onClick={() => {
-                  onLogout();
-                  handleMenuClose();
-                }}
-                className="logout-btn"
-              >
+
+              <button className="logout-btn" onClick={onLogoutClick}>
                 Logout
               </button>
             </>

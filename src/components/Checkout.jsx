@@ -1,32 +1,43 @@
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/cart.css";
 
-function Checkout({ cart, user, onClearCart }) {
+import { UserContext } from "../contexts/UserContext";
+import { CartContext } from "../contexts/CartContext";
+
+function Checkout() {
+  const { user } = useContext(UserContext);
+
+  const { cart, clearCart } = useContext(CartContext);
+
   const [formData, setFormData] = useState({
-    name: user.name,
-    email: user.email,
+    name: user?.name || "",
+    email: user?.email || "",
     address: "",
     payment: "credit",
   });
+
   const [orderComplete, setOrderComplete] = useState(false);
+
   const navigate = useNavigate();
 
-  const calculateTotal = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
+  const calculateTotal = () =>
+    cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
+  // Handle form input changes, updating local formData state
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle form submission (placing the order)
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Create order
+    // Create an order object with relevant info
     const order = {
-      id: Date.now(),
-      userId: user.id,
+      id: Date.now(), // simple unique id based on timestamp
+      userId: user?.uid || "guest", // use user ID or 'guest' if no user
       items: cart,
       total: calculateTotal(),
       shippingAddress: formData.address,
@@ -34,17 +45,18 @@ function Checkout({ cart, user, onClearCart }) {
       date: new Date().toISOString(),
     };
 
-    // Save order to localStorage
+    // Save the order to localStorage (simple persistence example)
     const orders = JSON.parse(localStorage.getItem("orders") || "[]");
     localStorage.setItem("orders", JSON.stringify([...orders, order]));
 
-    // Clear cart
-    onClearCart();
+    // Clear the global cart using the context action
+    clearCart();
 
-    // Show success message
+    // Show order complete message
     setOrderComplete(true);
   };
 
+  // If order is complete, show confirmation UI
   if (orderComplete) {
     return (
       <div className="checkout-complete">
@@ -57,11 +69,13 @@ function Checkout({ cart, user, onClearCart }) {
     );
   }
 
+  // Main checkout form and order summary UI
   return (
     <div className="checkout">
       <h2>Checkout</h2>
 
       <div className="checkout-container">
+        {/* Order Summary */}
         <div className="order-summary">
           <h3>Order Summary</h3>
           {cart.map((item) => (
@@ -78,6 +92,7 @@ function Checkout({ cart, user, onClearCart }) {
           </div>
         </div>
 
+        {/* Checkout Form */}
         <form onSubmit={handleSubmit} className="checkout-form">
           <h3>Shipping Information</h3>
           <div className="form-group">
@@ -90,6 +105,7 @@ function Checkout({ cart, user, onClearCart }) {
               required
             />
           </div>
+
           <div className="form-group">
             <label>Email</label>
             <input
@@ -100,6 +116,7 @@ function Checkout({ cart, user, onClearCart }) {
               required
             />
           </div>
+
           <div className="form-group">
             <label>Shipping Address</label>
             <textarea
@@ -122,6 +139,7 @@ function Checkout({ cart, user, onClearCart }) {
               />
               Credit Card
             </label>
+
             <label>
               <input
                 type="radio"
