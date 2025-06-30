@@ -17,29 +17,37 @@ import Checkout from "./components/Checkout";
 import YourProducts from "./components/YourProducts";
 import { UserContext, UserProvider } from "./contexts/UserContext";
 import { CartProvider } from "./contexts/CartContext";
-import { useContext } from "react";
-
-// Import Context Providers that hold user and cart state & logic
-// import { UserProvider, UserContext } from "./UserContext";
-// import { CartProvider } from "./CartContext";
+import { useContext, useEffect, useState } from "react";
+import { collection, doc, onSnapshot } from "firebase/firestore";
+import { db } from "./firebase";
+import ViewDetails from "./components/viewDetails";
 
 function App() {
+  const [products, setProducts] = useState(null);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
+      const product = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setProducts(product);
+    });
+    return unsubscribe;
+  }, []);
+
+  const productID = products?.map((product) => product.id);
+
   return (
-    // Wrap the entire app with UserProvider to share user info across components
     <UserProvider>
-      {/* Wrap with CartProvider to share cart data and actions across components */}
       <CartProvider>
         <Router>
           <div className="App">
-            {/* Navbar will access user and cart info from context */}
             <Navbar />
 
             <div className="container">
               <Routes>
-                {/* Public Home page */}
                 <Route path="/" element={<Home />} />
 
-                {/* Signup page - only accessible if NOT logged in */}
                 <Route
                   path="/signup"
                   element={
@@ -49,7 +57,6 @@ function App() {
                   }
                 />
 
-                {/* Login page - only accessible if NOT logged in */}
                 <Route
                   path="/login"
                   element={
@@ -61,6 +68,8 @@ function App() {
 
                 {/* Products page - accessible by everyone */}
                 <Route path="/products" element={<Products />} />
+
+                <Route path="/product/:id" element={<ViewDetails />} />
 
                 {/* Seller dashboard - only for logged-in users with role 'seller' */}
                 <Route

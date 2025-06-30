@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import {
@@ -23,7 +23,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const { setUser } = useContext(UserContext); // ✅ Use setUser from context
+  const { setUser } = useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,7 +36,6 @@ function Login() {
     setLoading(true);
 
     try {
-      // ✅ Step 1: Check if email exists
       const usersRef = collection(db, "users");
       const emailQuery = query(usersRef, where("email", "==", formData.email));
       const emailSnapshot = await getDocs(emailQuery);
@@ -47,7 +46,6 @@ function Login() {
         return;
       }
 
-      // ✅ Step 2: Sign in with Firebase Auth
       const userCredential = await signInWithEmailAndPassword(
         auth,
         formData.email,
@@ -56,7 +54,6 @@ function Login() {
 
       const user = userCredential.user;
 
-      // ✅ Step 3: Get user profile from Firestore
       const userDoc = await getDoc(doc(db, "users", user.uid));
 
       if (!userDoc.exists()) {
@@ -67,21 +64,17 @@ function Login() {
 
       const userData = userDoc.data();
 
-      // ✅ Step 4: Set user in global context
       setUser({
         uid: user.uid,
         ...userData,
       });
 
-      // ✅ Step 5: Navigate to home
       navigate("/");
     } catch (err) {
-      console.error("Login error code:", err.code);
-
       if (err.code === "auth/invalid-credential") {
         setError("Incorrect password. Please try again.");
       } else if (err.code === "auth/user-not-found") {
-        setError("This email is not registered.");
+        setError("Unregistered email.");
       } else if (err.code === "auth/invalid-email") {
         setError("Invalid email format.");
       } else if (err.code === "auth/user-disabled") {
@@ -101,10 +94,11 @@ function Login() {
       ) : (
         <div className="auth-container">
           <h2 className="auth-title">Login</h2>
-          {error && <p className="error-message">{error}</p>}
 
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">
+              {error && <p className="error-message">{error}</p>}
+
               <label className="form-label">Email</label>
               <input
                 type="email"
@@ -139,7 +133,7 @@ function Login() {
               )}
             </div>
 
-            <button type="submit" className="auth-btn" disabled={loading}>
+            <button type="submit" className="auth-btn">
               Login
             </button>
           </form>

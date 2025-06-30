@@ -4,23 +4,18 @@ import "../styles/productCard.css";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 
-// Import contexts to get global user and cart actions
 import { UserContext } from "../contexts/UserContext";
 import { CartContext } from "../contexts/CartContext";
 
 function Products() {
-  // Access the logged-in user from global UserContext
   const { user } = useContext(UserContext);
 
-  // Access addToCart function from CartContext to add products to cart
   const { addToCart } = useContext(CartContext);
 
-  // Local state for products list, loading state, and search term
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Listen to real-time updates on 'products' collection from Firestore
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
       // Map Firestore docs into product objects

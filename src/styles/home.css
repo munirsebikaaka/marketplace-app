@@ -1,12 +1,29 @@
+/* Full viewport background container */
+.home-wrapper {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+}
+
+/* Inner content container */
 .home {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: var(--space-xl) var(--space-lg);
+  background-color: #ffffff4f; /* light readable background */
+  padding: var(--space-xl);
+  border-radius: var(--border-radius-lg);
+  max-width: 600px;
+  width: 100%;
   text-align: center;
-  background-color: var(--light-gray);
+  box-shadow: var(--shadow-lg);
   color: var(--text-dark);
 }
 
+/* Heading */
 .home h1 {
   font-size: var(--font-size-xl);
   margin-bottom: var(--space-md);
@@ -14,13 +31,15 @@
   line-height: var(--line-height-md);
 }
 
+/* Paragraph */
 .home p {
   font-size: var(--font-size-base);
   color: var(--dark-gray);
   margin-bottom: var(--space-lg);
+  line-height: var(--line-height-md);
 }
 
-/* Shared Button Styles */
+/* Buttons */
 .btn {
   display: inline-block;
   padding: var(--space-sm) var(--space-md);
@@ -33,28 +52,29 @@
   transition: background-color var(--transition-fast),
     transform var(--transition-fast);
   margin: var(--space-xs);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn:hover {
-  background-color: #2980b9; /* Darker secondary */
+  background-color: #2980b9; /* slightly darker than --secondary-30 */
   transform: translateY(-2px);
 }
 
-/* Alternate Button (for Seller Dashboard) */
-.home .btn:nth-of-type(2n) {
+/* Alternate button for Seller Dashboard */
+.actions .btn:nth-of-type(2n) {
   background-color: var(--accent-10);
 }
 
-.home .btn:nth-of-type(2n):hover {
+.actions .btn:nth-of-type(2n):hover {
   background-color: #c0392b;
 }
 
-/* Auth Actions */
+/* Auth buttons group */
 .auth-actions {
   margin-bottom: var(--space-lg);
 }
 
-/* Main Actions */
+/* Main actions group */
 .actions {
   display: flex;
   justify-content: center;
@@ -62,10 +82,11 @@
   gap: var(--space-sm);
 }
 
-/* === Responsive Design === */
-@media (max-width: 768px) {
+/* Responsive Design */
+@media (max-width: 600px) {
   .home {
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-lg);
+    margin-top: var(--space-xxl);
   }
 
   .home h1 {
@@ -84,5 +105,9 @@
   .btn {
     width: 100%;
     max-width: 300px;
+  }
+
+  .home-wrapper {
+    min-height: 85vh;
   }
 }

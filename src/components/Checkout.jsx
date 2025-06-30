@@ -1,6 +1,6 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/cart.css";
+import "../styles/checkout.css";
 
 import { UserContext } from "../contexts/UserContext";
 import { CartContext } from "../contexts/CartContext";
@@ -24,20 +24,19 @@ function Checkout() {
   const calculateTotal = () =>
     cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  // Handle form input changes, updating local formData state
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission (placing the order)
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Create an order object with relevant info
     const order = {
-      id: Date.now(), // simple unique id based on timestamp
-      userId: user?.uid || "guest", // use user ID or 'guest' if no user
+      id: Date.now(),
+
+      userId: user?.uid || "guest",
+
       items: cart,
       total: calculateTotal(),
       shippingAddress: formData.address,
@@ -45,18 +44,14 @@ function Checkout() {
       date: new Date().toISOString(),
     };
 
-    // Save the order to localStorage (simple persistence example)
     const orders = JSON.parse(localStorage.getItem("orders") || "[]");
     localStorage.setItem("orders", JSON.stringify([...orders, order]));
 
-    // Clear the global cart using the context action
     clearCart();
 
-    // Show order complete message
     setOrderComplete(true);
   };
 
-  // If order is complete, show confirmation UI
   if (orderComplete) {
     return (
       <div className="checkout-complete">
@@ -69,13 +64,11 @@ function Checkout() {
     );
   }
 
-  // Main checkout form and order summary UI
   return (
     <div className="checkout">
       <h2>Checkout</h2>
 
       <div className="checkout-container">
-        {/* Order Summary */}
         <div className="order-summary">
           <h3>Order Summary</h3>
           {cart.map((item) => (
@@ -92,7 +85,6 @@ function Checkout() {
           </div>
         </div>
 
-        {/* Checkout Form */}
         <form onSubmit={handleSubmit} className="checkout-form">
           <h3>Shipping Information</h3>
           <div className="form-group">

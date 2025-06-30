@@ -1,0 +1,96 @@
+.product-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  background-color: var(--white);
+  padding: var(--space-lg);
+  margin: var(--space-lg) auto;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  color: var(--text-dark);
+}
+
+@media (min-width: 768px) {
+  .product-details {
+    flex-direction: row;
+    max-width: 900px;
+  }
+}
+
+.product-image-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-detail-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.product-info-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-title {
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--space-sm);
+  color: var(--primary-60);
+}
+
+.product-description,
+.product-price {
+  font-size: var(--font-size-base);
+  margin-bottom: var(--space-sm);
+  line-height: var(--line-height-md);
+}
+
+.reviews-summary {
+  background-color: var(--light-gray);
+  padding: var(--space-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-md);
+}
+
+.btn-product {
+  background-color: var(--secondary-30);
+  color: var(--white);
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+    transform var(--transition-fast);
+  align-self: flex-start;
+}
+
+.btn-product:hover {
+  background-color: var(--primary-60);
+  transform: scale(1.02);
+}
+
+.btn-product:disabled {
+  background-color: var(--medium-gray);
+  cursor: not-allowed;
+}
+
+.loading,
+.not-found {
+  text-align: center;
+  margin-top: var(--space-xl);
+  font-size: var(--font-size-md);
+  color: var(--dark-gray);
+}

@@ -26,6 +26,7 @@
 .form-group {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .form-label {
@@ -72,12 +73,13 @@
   cursor: not-allowed;
 }
 
-.error {
+.error-message {
   color: var(--accent-10);
   font-size: var(--font-size-sm);
   margin-bottom: var(--space-sm);
   text-align: center;
   position: absolute;
+  right: 0;
 }
 
 .password-group {

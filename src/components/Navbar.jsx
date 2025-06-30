@@ -46,14 +46,15 @@ const Navbar = () => {
                   Seller Dashboard
                 </Link>
               )}
-
-              <Link
-                className="link"
-                to="/yourproduct"
-                onClick={handleMenuClose}
-              >
-                Your Products
-              </Link>
+              {user.role === "seller" && (
+                <Link
+                  className="link"
+                  to="/yourproduct"
+                  onClick={handleMenuClose}
+                >
+                  Your Products
+                </Link>
+              )}
 
               <Link className="link" to="/cart" onClick={handleMenuClose}>
                 Cart ({cartCount})

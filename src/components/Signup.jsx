@@ -89,7 +89,7 @@ function Signup() {
 
       navigate("/"); // Redirect after signup
     } catch (err) {
-      console.error("Signup Error:", err.message);
+      // console.error("Signup Error:", err.message);
       setError(getFriendlyError(err.code));
     }
 
