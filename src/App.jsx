@@ -21,6 +21,7 @@ import { useContext, useEffect, useState } from "react";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 import ViewDetails from "./components/viewDetails";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [products, setProducts] = useState(null);
@@ -100,6 +101,17 @@ function App() {
             </div>
           </div>
         </Router>
+        <ToastContainer
+          position="center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnHover
+          theme="light"
+          className={"custom-toast"}
+        />
       </CartProvider>
     </UserProvider>
   );

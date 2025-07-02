@@ -186,6 +186,12 @@ a {
   font-family: var(--font-family);
 }
 
+/* custom-toast.css */
+.custom-toast {
+  font-family: var(--font-family);
+  font-size: 16px;
+}
+
 /* Layout */
 .container {
   width: 100%;

@@ -12,7 +12,6 @@ import { db } from "../firebase";
 
 import "../styles/sellerDashboard.css";
 import SellerForm from "./SellerForm";
-import YourProducts from "./YourProducts";
 
 // Import UserContext to get the logged-in user globally
 import { UserContext } from "../contexts/UserContext";
@@ -72,13 +71,6 @@ function SellerDashboard() {
         user={user}
         editingProduct={editingProduct}
         setEditingProduct={setEditingProduct}
-      />
-
-      {/* Pass products and handlers to YourProducts component */}
-      <YourProducts
-        products={products}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
       />
     </div>
   );

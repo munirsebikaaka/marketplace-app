@@ -142,9 +142,7 @@ export default function ChatBox({
         {loading ? (
           <p className="loading-text">Loading messages...</p>
         ) : messages.length === 0 ? (
-          <p className="no-messages-text">
-            No messages yet. Start the conversation!
-          </p>
+          <p className="no-messages-text">No messages yet.</p>
         ) : (
           messages.map((msg) => (
             <div

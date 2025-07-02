@@ -1,13 +1,38 @@
-function YourProducts({ products = [], onEdit, onDelete }) {
+import { collection, onSnapshot } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
+import { db } from "../firebase";
+import { UserContext } from "../contexts/UserContext";
+import { Link } from "react-router-dom";
+
+function YourProducts() {
+  const [products, setProducts] = useState([]);
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
+      const productList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setProducts(productList);
+    });
+    return unsubscribe;
+  }, []);
+
+  const filteredProducts = products?.filter(
+    (product) => product.sellerId === user?.uid
+  );
+
   return (
     <section className="seller-products">
       <h3>Your Products</h3>
       <div className="products-grid">
-        {Array.isArray(products) && products.length > 0 ? (
-          products.map((p) => (
+        {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
+          filteredProducts.map((p) => (
             <div key={p.id} className="product-card">
               <img
-                src={p.image || "def.jpg"} // fallback image if none provided
+                src={p.image || "def.jpg"}
                 alt={p.name || "Product Image"}
                 className="product-image"
               />
@@ -19,18 +44,10 @@ function YourProducts({ products = [], onEdit, onDelete }) {
                 </p>
 
                 <div className="product-actions">
-                  <button
-                    className="btn-action btn-edit"
-                    onClick={() => onEdit(p)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn-action btn-delete"
-                    onClick={() => onDelete(p.id)}
-                  >
-                    Delete
-                  </button>
+                  <Link to={`/product/${p.id}`} className="view-details">
+                    View Details
+                  </Link>
+                  <button className="btn-action btn-delete">Delete</button>
                 </div>
               </div>
             </div>

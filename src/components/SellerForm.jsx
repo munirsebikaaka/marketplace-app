@@ -7,6 +7,7 @@ import { db } from "../firebase";
 
 // Import UserContext
 import { UserContext } from "../contexts/UserContext";
+import { toast } from "react-toastify";
 
 function SellerForm({ editingProduct, setEditingProduct }) {
   // Get user from UserContext instead of props
@@ -128,10 +129,10 @@ function SellerForm({ editingProduct, setEditingProduct }) {
 
       setEditingProduct(null);
     } catch (err) {
-      alert("Error submitting product: " + err.message);
-      console.error(err);
+      toast.error(err.message);
     } finally {
       setIsSubmitting(false);
+      toast.success("Your product is added successfully!!");
     }
   };
 
@@ -187,13 +188,13 @@ function SellerForm({ editingProduct, setEditingProduct }) {
 
         {/* Image Input */}
         <div className="form-group">
-          <label htmlFor="image">Product Image:</label>
+          {/* <label htmlFor="image">Product Image:</label>
           <input
             id="image"
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-          />
+          /> */}
           {/* Uncomment to show image error:
           {errors.image && <p className="error-text">{errors.image}</p>} */}
         </div>

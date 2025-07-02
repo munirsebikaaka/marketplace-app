@@ -111,20 +111,3 @@ export default function ViewDetails() {
     </div>
   );
 }
-
-/*
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /chats/{chatId} {
-      allow read, write: if request.auth != null &&
-        (request.auth.uid == resource.data.buyerId || request.auth.uid == resource.data.sellerId);
-
-      match /messages/{messageId} {
-        allow read, write: if request.auth != null &&
-          (request.auth.uid == resource.parent.data.buyerId || request.auth.uid == resource.parent.data.sellerId);
-      }
-    }
-  }
-}
-*/
