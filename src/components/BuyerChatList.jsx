@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   collection,
   query,
@@ -9,61 +9,89 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { UserContext } from "../contexts/UserContext";
-import ChatBox from "./ChartBox";
-
-import "../styles/chats.css";
+import ChatBox from "./ChartBox"; // Note: 'ChartBox' seems like a typo; should be 'ChatBox'
 
 export default function BuyerChat({ sellerId, productId }) {
   const { user } = useContext(UserContext);
   const [chatId, setChatId] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [input, setInput] = useState("");
 
   useEffect(() => {
-    async function findOrCreateChat() {
-      if (!user || !sellerId || !productId) return;
+    if (!user || !sellerId || !productId) return;
 
-      setLoading(true);
-      setError(null);
+    // Optional: Check if buyer already has a chat with messages
+    async function fetchExistingChat() {
+      const chatQuery = query(
+        collection(db, "chats"),
+        where("buyerId", "==", user.uid),
+        where("sellerId", "==", sellerId),
+        where("productId", "==", productId)
+      );
 
-      try {
-        const chatsRef = collection(db, "chats");
-        const q = query(
-          chatsRef,
-          where("buyerId", "==", user.uid),
-          where("sellerId", "==", sellerId),
-          where("productId", "==", productId)
-        );
-
-        const snapshot = await getDocs(q);
-
-        if (!snapshot.empty) {
-          setChatId(snapshot.docs[0].id);
-        } else {
-          const newChat = await addDoc(chatsRef, {
-            buyerId: user.uid,
-            sellerId,
-            productId,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-            lastMessage: "",
-          });
-          setChatId(newChat.id);
-        }
-      } catch (e) {
-        console.error(e);
-        setError("Failed to load or create chat.");
+      const chatSnapshot = await getDocs(chatQuery);
+      if (!chatSnapshot.empty) {
+        setChatId(chatSnapshot.docs[0].id);
       }
-      setLoading(false);
     }
 
-    findOrCreateChat();
+    fetchExistingChat();
   }, [user, sellerId, productId]);
 
-  if (loading) return <p>Loading chat...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  async function handleSendMessage(e) {
+    e.preventDefault();
+    const trimmed = input.trim();
+    if (!trimmed) return;
 
-  if (!chatId) return <p>Unable to start chat. Please try again later.</p>;
+    let currentChatId = chatId;
 
-  return <ChatBox chatId={chatId} />;
+    // If no chat exists, create one now
+    if (!currentChatId) {
+      const newChatRef = await addDoc(collection(db, "chats"), {
+        buyerId: user.uid,
+        sellerId,
+        productId,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        lastMessage: trimmed,
+      });
+      currentChatId = newChatRef.id;
+      setChatId(currentChatId);
+    } else {
+      // Update chat metadata (e.g., lastMessage, updatedAt)
+      // Optional: Implement if needed
+    }
+
+    // Send the message
+    await addDoc(collection(db, "messages"), {
+      chatId: currentChatId,
+      senderId: user.uid,
+      text: trimmed,
+      createdAt: serverTimestamp(),
+    });
+
+    setInput("");
+  }
+
+  return (
+    <div className="chat-container">
+      {!chatId ? (
+        <form onSubmit={handleSendMessage} className="chat-input-container">
+          <input
+            type="text"
+            className="chat-input"
+            placeholder="Send a message to start chat"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            aria-label="Message input"
+            autoComplete="off"
+          />
+          <button type="submit" className="chat-send-button">
+            Send
+          </button>
+        </form>
+      ) : (
+        <ChatBox chatId={chatId} />
+      )}
+    </div>
+  );
 }

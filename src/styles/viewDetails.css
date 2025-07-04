@@ -64,6 +64,17 @@
   margin-bottom: var(--space-md);
 }
 
+.control-btns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.control-btns button {
+  width: 100%;
+}
+
 .btn-product {
   background-color: var(--secondary-30);
   color: var(--white);

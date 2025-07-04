@@ -43,64 +43,73 @@ export default function ViewDetails() {
 
   return (
     <>
-      <div className="product-details">
-        <div className="product-image-section">
-          <img
-            src={product.imageUrl || "/def.jpg"}
-            alt={product.name}
-            className="product-detail-image"
-          />
-        </div>
+      {!showChat ? (
+        <div className="product-details">
+          <div className="product-image-section">
+            <img
+              src={product.imageUrl || "/def.jpg"}
+              alt={product.name}
+              className="product-detail-image"
+            />
+          </div>
 
-        <div className="product-info-section">
-          <h2 className="product-title">{product.name}</h2>
-          <p className="product-description">
-            <strong>Description:</strong> {product.description}
-          </p>
-          <p className="product-price">
-            <strong>Price:</strong> ${product.price?.toFixed(2)}
-          </p>
+          <div className="product-info-section">
+            <h2 className="product-title">{product.name}</h2>
+            <p className="product-description">
+              <strong>Description:</strong> {product.description}
+            </p>
+            <p className="product-price">
+              <strong>Price:</strong> ${product.price?.toFixed(2)}
+            </p>
 
-          {product.reviews?.length > 0 && (
-            <div className="reviews-summary">
-              <p>
-                <strong>Rating:</strong>{" "}
-                {(
-                  product.reviews.reduce((sum, r) => sum + r.rating, 0) /
-                  product.reviews.length
-                ).toFixed(1)}
-                /5
-              </p>
-              <p>({product.reviews.length} reviews)</p>
+            {product.reviews?.length > 0 && (
+              <div className="reviews-summary">
+                <p>
+                  <strong>Rating:</strong>{" "}
+                  {(
+                    product.reviews.reduce((sum, r) => sum + r.rating, 0) /
+                    product.reviews.length
+                  ).toFixed(1)}
+                  /5
+                </p>
+                <p>({product.reviews.length} reviews)</p>
+              </div>
+            )}
+
+            <div className="control-btns">
+              <button
+                className="btn-product"
+                onClick={() => addToCart(product)}
+                disabled={!user || user.role === "seller"}
+              >
+                Add to Cart
+              </button>
+
+              {user && (
+                <button
+                  className="btn-product"
+                  onClick={() => {
+                    setShowChat(true);
+                  }}
+                >
+                  {user.uid === product.sellerId
+                    ? "Buyer Messages"
+                    : " Start Chat"}
+                </button>
+              )}
             </div>
-          )}
-
-          <button
-            className="btn-product"
-            onClick={() => addToCart(product)}
-            disabled={!user || user.role === "seller"}
-          >
-            Add to Cart
-          </button>
-
-          {user && user.uid !== product.sellerId && (
-            <button
-              className="btn-product"
-              onClick={() => {
-                setShowChat(true);
-              }}
-            >
-              Start Chat
-            </button>
-          )}
+          </div>
         </div>
-      </div>
-
-      {(showChat || user?.uid === product.sellerId) && user?.uid && (
-        <ProductChatManager
-          sellerId={product.sellerId}
-          productId={product.id}
-        />
+      ) : (
+        <>
+          {showChat && user?.uid && (
+            <ProductChatManager
+              sellerId={product.sellerId}
+              productId={product.id}
+              onSetShowChat={setShowChat}
+            />
+          )}
+        </>
       )}
     </>
   );

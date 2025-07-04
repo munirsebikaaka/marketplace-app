@@ -44,10 +44,10 @@ function YourProducts() {
                 </p>
 
                 <div className="product-actions">
+                  <button className="btn-action btn-delete">Delete</button>
                   <Link to={`/product/${p.id}`} className="view-details">
                     View Details
                   </Link>
-                  <button className="btn-action btn-delete">Delete</button>
                 </div>
               </div>
             </div>

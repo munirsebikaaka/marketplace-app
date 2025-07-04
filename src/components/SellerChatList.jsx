@@ -9,6 +9,7 @@ export default function SellerChatList({
   productId,
   selectedChatId,
   onSelectChat,
+  onSetShowChat,
 }) {
   const { user } = useContext(UserContext);
   const [chats, setChats] = useState([]);
@@ -40,10 +41,21 @@ export default function SellerChatList({
   }
 
   if (!user) return <p>Please log in to see chats.</p>;
-  if (!chats.length) return <p>No buyers have started chats yet.</p>;
+  if (!chats.length)
+    return (
+      <p className="default-p">
+        No buyers chats yet.
+        <button onClick={() => onSetShowChat(false)} className="go-back">
+          go back
+        </button>
+      </p>
+    );
 
   return (
     <div className="chat-sidebar">
+      <button onClick={() => onSetShowChat(false)} className="go-back main">
+        go back
+      </button>
       <div className="sidebar-header">Buyer Chats</div>
       <ul className="chat-list" role="list">
         {chats.map(({ id, buyerId, lastMessage, updatedAt }) => (
@@ -59,9 +71,8 @@ export default function SellerChatList({
               if (e.key === "Enter") onSelectChat(id);
             }}
           >
-            {buyerId === user.uid ? <p>{user.mane}</p> : <p>no user</p>}
             <div className="avatar">{getInitials(buyerId)}</div>
-            <div className="chat-info">
+            {/* <div className="chat-info">
               <div className="chat-name">{buyerId}</div>
               <div className="chat-last-message">
                 {lastMessage
@@ -69,7 +80,7 @@ export default function SellerChatList({
                     (lastMessage.length > 30 ? "…" : "")
                   : "No messages yet"}
               </div>
-            </div>
+            </div> */}
             <div className="chat-time">
               {updatedAt?.toDate
                 ? new Date(updatedAt.toDate()).toLocaleTimeString([], {

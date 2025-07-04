@@ -189,8 +189,10 @@ textarea {
 
 .product-actions {
   display: flex;
+  justify-content: space-between;
   gap: var(--space-sm);
   margin-top: auto;
+  border: 1px solid red;
 }
 
 .btn-action {
@@ -201,7 +203,7 @@ textarea {
   cursor: pointer;
   transition: background-color var(--transition-fast);
   font-family: Outfit;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .btn-edit {

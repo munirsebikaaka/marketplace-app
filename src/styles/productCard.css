@@ -115,6 +115,7 @@
 .product-further-links {
   margin-top: auto;
   display: flex;
+  justify-content: space-between;
   gap: var(--space-sm);
   flex-wrap: wrap;
 }
@@ -126,6 +127,7 @@
   border: none;
   cursor: pointer;
   transition: background-color var(--transition-fast);
+  font-family: var(--font-family);
 }
 
 .btn-primary {

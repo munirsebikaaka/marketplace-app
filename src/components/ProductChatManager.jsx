@@ -6,7 +6,11 @@ import BuyerChat from "./BuyerChatList";
 import "../styles/chats.css";
 import ChatBox from "./ChartBox";
 
-export default function ProductChatManager({ sellerId, productId }) {
+export default function ProductChatManager({
+  sellerId,
+  productId,
+  onSetShowChat,
+}) {
   const { user } = useContext(UserContext);
   const [selectedChatId, setSelectedChatId] = useState(null);
 
@@ -19,6 +23,7 @@ export default function ProductChatManager({ sellerId, productId }) {
           productId={productId}
           selectedChatId={selectedChatId}
           onSelectChat={setSelectedChatId}
+          onSetShowChat={onSetShowChat}
         />
         <ChatBox chatId={selectedChatId} />
       </div>
