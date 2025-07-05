@@ -1,4 +1,5 @@
-/* Full viewport background container */
+/*
+
 .home-wrapper {
   min-height: 100vh;
   background-size: cover;
@@ -11,9 +12,10 @@
   padding: var(--space-lg);
 }
 
-/* Inner content container */
+
 .home {
-  background-color: #ffffff4f; /* light readable background */
+  background-color: #ffffff4f; 
+  
   padding: var(--space-xl);
   border-radius: var(--border-radius-lg);
   max-width: 600px;
@@ -23,7 +25,7 @@
   color: var(--text-dark);
 }
 
-/* Heading */
+
 .home h1 {
   font-size: var(--font-size-xl);
   margin-bottom: var(--space-md);
@@ -31,7 +33,7 @@
   line-height: var(--line-height-md);
 }
 
-/* Paragraph */
+
 .home p {
   font-size: var(--font-size-base);
   color: var(--dark-gray);
@@ -39,7 +41,7 @@
   line-height: var(--line-height-md);
 }
 
-/* Buttons */
+
 .btn {
   display: inline-block;
   padding: var(--space-sm) var(--space-md);
@@ -56,11 +58,12 @@
 }
 
 .btn:hover {
-  background-color: #2980b9; /* slightly darker than --secondary-30 */
+  background-color: #2980b9; 
+  
   transform: translateY(-2px);
 }
 
-/* Alternate button for Seller Dashboard */
+
 .actions .btn:nth-of-type(2n) {
   background-color: var(--accent-10);
 }
@@ -69,12 +72,12 @@
   background-color: #c0392b;
 }
 
-/* Auth buttons group */
+
 .auth-actions {
   margin-bottom: var(--space-lg);
 }
 
-/* Main actions group */
+
 .actions {
   display: flex;
   justify-content: center;
@@ -82,7 +85,7 @@
   gap: var(--space-sm);
 }
 
-/* Responsive Design */
+
 @media (max-width: 600px) {
   .home {
     padding: var(--space-lg);
@@ -109,5 +112,248 @@
 
   .home-wrapper {
     min-height: 85vh;
+  }
+}
+*/
+
+.home {
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg);
+  font-family: var(--font-primary);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.home__header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.home__title {
+  font-size: 2rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.home__auth {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.home__search {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-lg) 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.input {
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  font-size: 1rem;
+  min-width: 150px;
+  flex-grow: 1;
+  max-width: 300px;
+}
+
+.input--select {
+  max-width: 180px;
+  flex-grow: 0;
+}
+
+.input--text {
+  flex-grow: 1;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn--primary {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.btn--secondary {
+  background-color: var(--color-secondary);
+  color: #fff;
+}
+
+.btn--secondary:hover {
+  background-color: var(--color-secondary-dark);
+}
+
+.section__title {
+  font-size: 1.5rem;
+  margin: var(--spacing-lg) 0 var(--spacing-md);
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+.home__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.category {
+  background-color: var(--color-surface);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: transform 0.2s ease;
+  width: 120px;
+  user-select: none;
+}
+
+.category:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.category__icon {
+  font-size: 2rem;
+}
+
+.category__name {
+  margin-top: var(--spacing-xs);
+  font-weight: var(--font-weight-semibold);
+  font-size: 0.95rem;
+}
+
+.home__products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.product-card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.product-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.product-card__image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.product-card__info {
+  padding: var(--spacing-sm);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-card__title {
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-xs);
+}
+
+.product-card__price {
+  color: var(--color-secondary);
+  font-weight: var(--font-weight-bold);
+  font-size: 1.1rem;
+  margin-top: auto;
+  text-align: right;
+}
+
+.loading,
+.no-products {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+}
+
+/* ========== RESPONSIVE BREAKPOINTS ========== */
+
+/* Small devices (phones) */
+@media (max-width: 600px) {
+  .home__search {
+    flex-direction: column;
+  }
+
+  .input,
+  .input--select {
+    max-width: 100%;
+    flex-grow: 1;
+  }
+
+  .btn {
+    width: 100%;
+    margin-top: var(--spacing-sm);
+  }
+
+  .home__categories {
+    justify-content: center;
+  }
+
+  .category {
+    width: 90px;
+    padding: var(--spacing-xs);
+  }
+
+  .category__icon {
+    font-size: 1.5rem;
+  }
+
+  .category__name {
+    font-size: 0.8rem;
+  }
+
+  .product-card__image {
+    height: 140px;
+  }
+}
+
+/* Medium devices (tablets) */
+@media (max-width: 900px) {
+  .home__products {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  .product-card__image {
+    height: 160px;
   }
 }

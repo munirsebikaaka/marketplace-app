@@ -22,6 +22,13 @@ import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 import ViewDetails from "./components/viewDetails";
 import { ToastContainer } from "react-toastify";
+import ElectronicsProducts from "./components/ElectronicsProducts";
+import VehicleProducts from "./components/VehicleProducts";
+import FunitureProducts from "./components/funitureProducts";
+import PropertiesProducts from "./components/propertiesProducts";
+import MobilePhonesProducts from "./components/MobilePhonesProducts";
+import FashionProducts from "./components/FashionProducts";
+import FoodAndAgriculture from "./components/FoodAndAgriculture";
 
 function App() {
   const [products, setProducts] = useState(null);
@@ -96,6 +103,17 @@ function App() {
                       <Checkout />
                     </RequireUser>
                   }
+                />
+
+                <Route path="/electronics" element={<ElectronicsProducts />} />
+                <Route path="/vehicles" element={<VehicleProducts />} />
+                <Route path="/furniture" element={<FunitureProducts />} />
+                <Route path="/properties" element={<PropertiesProducts />} />
+                <Route path="/phones" element={<MobilePhonesProducts />} />
+                <Route path="/fashion" element={<FashionProducts />} />
+                <Route
+                  path="/foodAndAgriculture"
+                  element={<FoodAndAgriculture />}
                 />
               </Routes>
             </div>

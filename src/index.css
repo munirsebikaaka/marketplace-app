@@ -146,6 +146,53 @@ body {
   --transition-slow: 0.5s ease;
 }
 
+:root {
+  /* 🎨 COLORS */
+  --color-primary: #1e90ff; /* Electric Blue */
+  --color-primary-dark: #187bcd;
+  --color-secondary: #ff6b3d; /* Orange Accent */
+  --color-success: #2ecc71; /* Green */
+  --color-error: #e74c3c; /* Red */
+  --color-bg: #f9f9f9; /* App background */
+  --color-surface: #ffffff; /* Cards, containers */
+  --color-text-primary: #333333;
+  --color-text-secondary: #666666;
+  --color-border: #dddddd;
+
+  /* ✍️ TYPOGRAPHY */
+  --font-primary: "Inter", sans-serif;
+  --font-heading: "Poppins", sans-serif;
+  --font-size-base: 16px;
+  --font-size-sm: 14px;
+  --font-size-lg: 20px;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* 📦 SPACING & SIZES */
+  --spacing-xxs: 0.25rem; /* 4px */
+  --spacing-xs: 0.5rem; /* 8px */
+  --spacing-sm: 0.75rem; /* 12px */
+  --spacing-md: 1rem; /* 16px */
+  --spacing-lg: 1.5rem; /* 24px */
+  --spacing-xl: 2rem; /* 32px */
+  --container-width: 1200px;
+
+  /* 🧱 RADIUS & SHADOWS */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+  /* 🧭 Z-INDEX */
+  --z-navbar: 1000;
+  --z-dropdown: 1100;
+  --z-modal: 1200;
+}
+
 /* Base Styles */
 * {
   box-sizing: border-box;

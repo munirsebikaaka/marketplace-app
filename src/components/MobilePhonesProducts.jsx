@@ -1,25 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-import "../styles/productCard.css";
 import { collection, onSnapshot } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
 import { db } from "../firebase";
-
 import { UserContext } from "../contexts/UserContext";
-import { CartContext } from "../contexts/CartContext";
-import ElectronicsProducts from "./ElectronicsProducts";
+import { Link } from "react-router-dom";
 
-function Products() {
-  const { user } = useContext(UserContext);
-
-  const { addToCart } = useContext(CartContext);
-
+const MobilePhonesProducts = () => {
   const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
-      // Map Firestore docs into product objects
       const productList = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -28,38 +20,23 @@ function Products() {
       setProducts(productList);
       setLoading(false);
     });
-
-    // Cleanup listener on component unmount
     return unsubscribe;
   }, []);
 
-  // Filter products based on search term in name or description
-  const filteredProducts = products.filter(
-    (product) =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const phones = products?.filter(
+    (product) => product.category?.toLowerCase() === "phones"
   );
 
   return (
     <div className="products">
-      <h2>Products</h2>
-
-      {/* Search input to filter products */}
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+      <h2>Mobile phones</h2>
 
       {loading ? (
         <p>Loading products...</p>
       ) : (
         <div className="products-grid">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
+          {phones.length > 0 ? (
+            phones.map((product) => (
               <div key={product.id} className="product-card">
                 {/* Placeholder image */}
                 {/* <img
@@ -132,6 +109,5 @@ function Products() {
       )}
     </div>
   );
-}
-
-export default Products;
+};
+export default MobilePhonesProducts;
