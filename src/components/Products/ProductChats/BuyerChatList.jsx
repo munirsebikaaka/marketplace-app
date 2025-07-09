@@ -7,9 +7,11 @@ import {
   addDoc,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "../firebase";
-import { UserContext } from "../contexts/UserContext";
-import ChatBox from "./ChartBox"; // Note: 'ChartBox' seems like a typo; should be 'ChatBox'
+
+import ChatBox from "./ChartBox";
+
+import { db } from "../../../firebase";
+import { UserContext } from "../../../contexts/UserContext";
 
 export default function BuyerChat({ sellerId, productId }) {
   const { user } = useContext(UserContext);
@@ -19,7 +21,6 @@ export default function BuyerChat({ sellerId, productId }) {
   useEffect(() => {
     if (!user || !sellerId || !productId) return;
 
-    // Optional: Check if buyer already has a chat with messages
     async function fetchExistingChat() {
       const chatQuery = query(
         collection(db, "chats"),

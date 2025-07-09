@@ -1,0 +1,222 @@
+[
+  {
+    "id": "prod001",
+    "name": "Wireless Bluetooth Headphones",
+    "category": "Electronics",
+    "subcategory": "Audio",
+    "price": 79.99,
+    "description": "Immersive sound experience with noise-cancelling features and long battery life.",
+    "imageUrl": "https://placehold.co/400x300/007bff/ffffff?text=Headphones",
+    "stock": 150
+  },
+  {
+    "id": "prod002",
+    "name": "Organic Cotton T-Shirt",
+    "category": "Apparel",
+    "subcategory": "Tops",
+    "price": 24.5,
+    "description": "Soft, breathable, and eco-friendly t-shirt made from 100% organic cotton.",
+    "imageUrl": "https://placehold.co/400x300/28a745/ffffff?text=T-Shirt",
+    "stock": 300
+  },
+  {
+    "id": "prod003",
+    "name": "Smart Home Security Camera",
+    "category": "Home & Kitchen",
+    "subcategory": "Smart Home Devices",
+    "price": 129.0,
+    "description": "Full HD camera with motion detection, night vision, and two-way audio.",
+    "imageUrl": "https://placehold.co/400x300/ffc107/000000?text=Security+Cam",
+    "stock": 80
+  },
+  {
+    "id": "prod004",
+    "name": "The Great Adventure Book",
+    "category": "Books",
+    "subcategory": "Fiction",
+    "price": 15.99,
+    "description": "An epic tale of courage, discovery, and friendship across uncharted lands.",
+    "imageUrl": "https://placehold.co/400x300/6c757d/ffffff?text=Book",
+    "stock": 200
+  },
+  {
+    "id": "prod005",
+    "name": "Premium Coffee Beans (1lb)",
+    "category": "Groceries",
+    "subcategory": "Beverages",
+    "price": 18.75,
+    "description": "Rich, aromatic, and ethically sourced Arabica coffee beans from Colombia.",
+    "imageUrl": "https://placehold.co/400x300/dc3545/ffffff?text=Coffee+Beans",
+    "stock": 120
+  },
+  {
+    "id": "prod006",
+    "name": "4K Ultra HD Smart TV",
+    "category": "Electronics",
+    "subcategory": "Televisions",
+    "price": 899.99,
+    "description": "Stunning visuals and smart features for an immersive entertainment experience.",
+    "imageUrl": "https://placehold.co/400x300/007bff/ffffff?text=Smart+TV",
+    "stock": 50
+  },
+  {
+    "id": "prod007",
+    "name": "Men's Casual Denim Jeans",
+    "category": "Apparel",
+    "subcategory": "Bottoms",
+    "price": 49.99,
+    "description": "Comfortable and stylish denim jeans, perfect for everyday wear.",
+    "imageUrl": "https://placehold.co/400x300/28a745/ffffff?text=Denim+Jeans",
+    "stock": 180
+  },
+  {
+    "id": "prod008",
+    "name": "Stainless Steel Cookware Set",
+    "category": "Home & Kitchen",
+    "subcategory": "Cookware",
+    "price": 199.0,
+    "description": "Durable and elegant 10-piece cookware set for all your culinary needs.",
+    "imageUrl": "https://placehold.co/400x300/ffc107/000000?text=Cookware+Set",
+    "stock": 60
+  },
+  {
+    "id": "prod009",
+    "name": "Science Fiction Anthology",
+    "category": "Books",
+    "subcategory": "Fiction",
+    "price": 22.0,
+    "description": "A collection of captivating short stories exploring futuristic worlds.",
+    "imageUrl": "https://placehold.co/400x300/6c757d/ffffff?text=Sci-Fi+Book",
+    "stock": 90
+  },
+  {
+    "id": "prod010",
+    "name": "Artisan Sourdough Bread",
+    "category": "Groceries",
+    "subcategory": "Baked Goods",
+    "price": 5.5,
+    "description": "Freshly baked sourdough bread with a crispy crust and soft interior.",
+    "imageUrl": "https://placehold.co/400x300/dc3545/ffffff?text=Sourdough+Bread",
+    "stock": 70
+  },
+  {
+    "id": "prod011",
+    "name": "Gaming Laptop RTX 3080",
+    "category": "Electronics",
+    "subcategory": "Computers",
+    "price": 1899.0,
+    "description": "High-performance gaming laptop with NVIDIA RTX 3080 graphics card.",
+    "imageUrl": "https://placehold.co/400x300/007bff/ffffff?text=Gaming+Laptop",
+    "stock": 30
+  },
+  {
+    "id": "prod012",
+    "name": "Women's Summer Dress",
+    "category": "Apparel",
+    "subcategory": "Dresses",
+    "price": 35.0,
+    "description": "Light and airy floral summer dress, perfect for warm weather.",
+    "imageUrl": "https://placehold.co/400x300/28a745/ffffff?text=Summer+Dress",
+    "stock": 250
+  },
+  {
+    "id": "prod013",
+    "name": "Robotic Vacuum Cleaner",
+    "category": "Home & Kitchen",
+    "subcategory": "Cleaning Appliances",
+    "price": 299.99,
+    "description": "Automated vacuum cleaner with smart mapping and app control.",
+    "imageUrl": "https://placehold.co/400x300/ffc107/000000?text=Robot+Vacuum",
+    "stock": 45
+  },
+  {
+    "id": "prod014",
+    "name": "Classic Literature Collection",
+    "category": "Books",
+    "subcategory": "Fiction",
+    "price": 75.0,
+    "description": "A beautifully bound set of timeless literary masterpieces.",
+    "imageUrl": "https://placehold.co/400x300/6c757d/ffffff?text=Classics+Set",
+    "stock": 100
+  },
+  {
+    "id": "prod015",
+    "name": "Organic Fresh Fruits Basket",
+    "category": "Groceries",
+    "subcategory": "Produce",
+    "price": 29.99,
+    "description": "A selection of seasonal organic fruits, perfect for healthy snacking.",
+    "imageUrl": "https://placehold.co/400x300/dc3545/ffffff?text=Fruit+Basket",
+    "stock": 60
+  },
+  {
+    "id": "prod016",
+    "name": "Portable Bluetooth Speaker",
+    "category": "Electronics",
+    "subcategory": "Audio",
+    "price": 45.0,
+    "description": "Compact and powerful speaker with rich bass and waterproof design.",
+    "imageUrl": "https://placehold.co/400x300/007bff/ffffff?text=Speaker",
+    "stock": 200
+  },
+  {
+    "id": "prod017",
+    "name": "Unisex Hoodie",
+    "category": "Apparel",
+    "subcategory": "Outerwear",
+    "price": 39.99,
+    "description": "Comfortable and versatile hoodie made from a soft cotton blend.",
+    "imageUrl": "https://placehold.co/400x300/28a745/ffffff?text=Hoodie",
+    "stock": 170
+  },
+  {
+    "id": "prod018",
+    "name": "Ergonomic Office Chair",
+    "category": "Home & Kitchen",
+    "subcategory": "Furniture",
+    "price": 250.0,
+    "description": "Designed for maximum comfort and support during long working hours.",
+    "imageUrl": "https://placehold.co/400x300/ffc107/000000?text=Office+Chair",
+    "stock": 40
+  },
+  {
+    "id": "prod019",
+    "name": "Children's Picture Book",
+    "category": "Books",
+    "subcategory": "Children's Books",
+    "price": 9.99,
+    "description": "A delightful story with vibrant illustrations for young readers.",
+    "imageUrl": "https://placehold.co/400x300/6c757d/ffffff?text=Kids+Book",
+    "stock": 150
+  },
+  {
+    "id": "prod020",
+    "name": "Assorted Gourmet Chocolates",
+    "category": "Groceries",
+    "subcategory": "Snacks & Sweets",
+    "price": 12.5,
+    "description": "A luxurious selection of handcrafted chocolates for any occasion.",
+    "imageUrl": "https://placehold.co/400x300/dc3545/ffffff?text=Chocolates",
+    "stock": 95
+  },
+  {
+    "id": "prod021",
+    "name": "Digital Drawing Tablet",
+    "category": "Electronics",
+    "subcategory": "Computer Accessories",
+    "price": 149.0,
+    "description": "High-precision drawing tablet for digital artists and designers.",
+    "imageUrl": "https://placehold.co/400x300/007bff/ffffff?text=Drawing+Tablet",
+    "stock": 70
+  },
+  {
+    "id": "prod022",
+    "name": "Running Shoes",
+    "category": "Apparel",
+    "subcategory": "Footwear",
+    "price": 89.99,
+    "description": "Lightweight and supportive running shoes for optimal performance.",
+    "imageUrl": "https://placehold.co/400x300/28a745/ffffff?text=Running+Shoes",
+    "stock": 120
+  }
+]

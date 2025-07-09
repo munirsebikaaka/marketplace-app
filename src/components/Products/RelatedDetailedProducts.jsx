@@ -1,53 +1,33 @@
-import { collection, onSnapshot } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
-import { db } from "../firebase";
-import { UserContext } from "../contexts/UserContext";
+import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
+import { useProducts } from "../../contexts/ProductsContext";
+import Spinner from "../../Features/Spiner";
 
-const PropertiesProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+import "../../styles/products.css";
+import { useContext } from "react";
 
+const PropertiesProducts = ({ productCategory }) => {
   const { user } = useContext(UserContext);
+  const { products, loading } = useProducts();
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
-      const productList = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      setProducts(productList);
-      setLoading(false);
-    });
-    return unsubscribe;
-  }, []);
-
-  const properties = products?.filter(
-    (product) => product.category?.toLowerCase() === "properties"
+  const relatedDetailedProducts = products?.filter(
+    (product) => product.category?.toLowerCase() === productCategory
   );
 
   return (
     <div className="products">
-      <h2>Properties</h2>
+      <h2>Related products</h2>
 
       {loading ? (
-        <p>Loading products...</p>
+        <Spinner />
       ) : (
         <div className="products-grid">
-          {properties.length > 0 ? (
-            properties.map((product) => (
+          {relatedDetailedProducts.length > 0 ? (
+            relatedDetailedProducts.map((product) => (
               <div key={product.id} className="product-card">
-                {/* Placeholder image */}
-                {/* <img
+                <img
                   src={product.imageUrl || "def.jpg"}
                   alt={product.name}
-                  className="product-image"
-                /> */}
-
-                <img
-                  src={"def.jpg"}
-                  alt={"default data"}
                   className="product-image"
                 />
 
@@ -75,12 +55,10 @@ const PropertiesProducts = () => {
                     </div>
                   )}
 
-                  {/* Buttons for adding to cart and viewing details */}
                   <div className="product-further-links">
                     <button
                       className="btn-product btn-primary"
                       onClick={() => addToCart(product)}
-                      // Disable button if user is not logged in or user is a seller
                       disabled={!user || user.role === "seller"}
                     >
                       Add to Cart
@@ -98,8 +76,7 @@ const PropertiesProducts = () => {
             ))
           ) : (
             <p>
-              No products found.{" "}
-              {/* If user is a seller, suggest adding products */}
+              No products found.
               {user?.role === "seller" && (
                 <Link to="/seller">Add some products</Link>
               )}

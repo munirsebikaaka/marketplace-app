@@ -1,42 +1,29 @@
-import { collection, onSnapshot } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
-import { db } from "../firebase";
-import { UserContext } from "../contexts/UserContext";
+import { useContext } from "react";
+
+import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
 
-const ElectronicsProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+import { useProducts } from "../../contexts/ProductsContext";
+import Spinner from "../../Features/Spiner";
 
+const FashionProducts = () => {
   const { user } = useContext(UserContext);
+  const { products, loading } = useProducts();
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
-      const productList = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      setProducts(productList);
-      setLoading(false);
-    });
-    return unsubscribe;
-  }, []);
-
-  const electronics = products?.filter(
-    (product) => product.category?.toLowerCase() === "electronics"
+  const fashion = products?.filter(
+    (product) => product.category?.toLowerCase() === "fashion"
   );
 
   return (
     <div className="products">
-      <h2>Electronics</h2>
+      <h2>Fashion</h2>
 
       {loading ? (
-        <p>Loading products...</p>
+        <Spinner />
       ) : (
         <div className="products-grid">
-          {electronics.length > 0 ? (
-            electronics.map((product) => (
+          {fashion.length > 0 ? (
+            fashion.map((product) => (
               <div key={product.id} className="product-card">
                 {/* Placeholder image */}
                 {/* <img
@@ -110,4 +97,4 @@ const ElectronicsProducts = () => {
     </div>
   );
 };
-export default ElectronicsProducts;
+export default FashionProducts;

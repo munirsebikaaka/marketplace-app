@@ -1,55 +1,45 @@
-import { useContext, useEffect, useState } from "react";
-import { db } from "../firebase";
-import { UserContext } from "../contexts/UserContext";
+import { useContext } from "react";
+
+import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
-import { collection, onSnapshot } from "firebase/firestore";
+import { useProducts } from "../../contexts/ProductsContext";
+import Spinner from "../../Features/Spiner";
 
-const FashionProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+import "../../styles/products.css";
+import data from "./../../utils/data/products.json";
 
+const PropertiesProducts = () => {
   const { user } = useContext(UserContext);
+  const { products, loading } = useProducts();
+  // console.log(data);
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
-      const productList = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      setProducts(productList);
-      setLoading(false);
-    });
-    return unsubscribe;
-  }, []);
-
-  const fashion = products?.filter(
-    (product) => product.category?.toLowerCase() === "fashion"
+  const properties = products?.filter(
+    (product) => product.category?.toLowerCase() === "properties"
   );
 
   return (
     <div className="products">
-      <h2>Fashion</h2>
+      <h2>Properties</h2>
 
       {loading ? (
-        <p>Loading products...</p>
+        <Spinner />
       ) : (
         <div className="products-grid">
-          {fashion.length > 0 ? (
-            fashion.map((product) => (
+          {data.length > 0 ? (
+            data.map((product) => (
               <div key={product.id} className="product-card">
                 {/* Placeholder image */}
-                {/* <img
+                <img
                   src={product.imageUrl || "def.jpg"}
                   alt={product.name}
                   className="product-image"
-                /> */}
+                />
 
-                <img
+                {/* <img
                   src={"def.jpg"}
                   alt={"default data"}
                   className="product-image"
-                />
+                /> */}
 
                 <div className="seller-product-card">
                   <h3 className="product-title">{product.name}</h3>
@@ -98,8 +88,7 @@ const FashionProducts = () => {
             ))
           ) : (
             <p>
-              No products found.{" "}
-              {/* If user is a seller, suggest adding products */}
+              No products found.
               {user?.role === "seller" && (
                 <Link to="/seller">Add some products</Link>
               )}
@@ -110,4 +99,4 @@ const FashionProducts = () => {
     </div>
   );
 };
-export default FashionProducts;
+export default PropertiesProducts;

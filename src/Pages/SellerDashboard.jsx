@@ -8,36 +8,29 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-import { db } from "../firebase";
-
 import "../styles/sellerDashboard.css";
-import SellerForm from "./SellerForm";
-
-// Import UserContext to get the logged-in user globally
 import { UserContext } from "../contexts/UserContext";
+import SellerForm from "../components/SellerDetails/SellerForm";
+import { db } from "../firebase";
+import userName from "../Features/UserName";
 
 function SellerDashboard() {
-  // Get the current user from UserContext instead of props
   const { user } = useContext(UserContext);
 
-  const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirect to home if user is not a seller
     if (user?.role !== "seller") {
       navigate("/");
       return;
     }
 
-    // Query Firestore products where sellerId matches current user's uid
     const q = query(
       collection(db, "products"),
       where("sellerId", "==", user.uid)
     );
 
-    // Subscribe to real-time updates of seller's products
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const items = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -46,14 +39,11 @@ function SellerDashboard() {
       setProducts(items);
     });
 
-    // Cleanup subscription on unmount
     return unsubscribe;
   }, [user, navigate]);
 
-  // Handler to start editing a product
   const handleEdit = (product) => setEditingProduct(product);
 
-  // Handler to delete a product document from Firestore
   const handleDelete = async (id) => {
     await deleteDoc(doc(db, "products", id));
   };
@@ -62,11 +52,10 @@ function SellerDashboard() {
     <div className="seller-dashboard">
       <header className="dashboard-header">
         <h2>Seller Dashboard</h2>
-        {/* Show the seller's name if user is loaded */}
-        <p>Welcome, {user?.name}</p>
+
+        <p>Welcome, {userName(user)}</p>
       </header>
 
-      {/* Pass user and editing state to SellerForm */}
       <SellerForm
         user={user}
         editingProduct={editingProduct}

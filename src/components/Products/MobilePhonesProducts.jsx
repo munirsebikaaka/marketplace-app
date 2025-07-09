@@ -1,27 +1,12 @@
-import { collection, onSnapshot } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
-import { db } from "../firebase";
-import { UserContext } from "../contexts/UserContext";
+import { useContext } from "react";
+
+import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
+import { useProducts } from "../../contexts/ProductsContext";
 
 const MobilePhonesProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
   const { user } = useContext(UserContext);
-
-  useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
-      const productList = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      setProducts(productList);
-      setLoading(false);
-    });
-    return unsubscribe;
-  }, []);
+  const { products, loading } = useProducts();
 
   const phones = products?.filter(
     (product) => product.category?.toLowerCase() === "phones"

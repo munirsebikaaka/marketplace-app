@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
-import { UserContext } from "../contexts/UserContext";
-import SellerChatList from "./SellerChatList";
+import { UserContext } from "../../../contexts/UserContext";
+
 import BuyerChat from "./BuyerChatList";
 
-import "../styles/chats.css";
 import ChatBox from "./ChartBox";
+import SellerChatList from "./SellerChatList";
+import "../../../styles/chats.css";
 
 export default function ProductChatManager({
   sellerId,

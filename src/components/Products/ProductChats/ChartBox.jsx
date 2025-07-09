@@ -9,8 +9,8 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { db } from "../firebase";
-import { UserContext } from "../contexts/UserContext";
+import { db } from "../../../firebase";
+import { UserContext } from "../../../contexts/UserContext";
 
 export default function ChatBox({ chatId }) {
   const { user } = useContext(UserContext);

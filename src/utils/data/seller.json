@@ -1,0 +1,25 @@
+{
+  "sellerId": "seller_uuid_12345",
+  "email": "seller@example.com",
+  "hashedPassword": "some_secure_hash_of_password",
+  "companyName": "Acme Innovations Inc.",
+  "contactInfo": {
+    "phone": "+1-555-123-4567",
+    "address": {
+      "street": "123 Main St",
+      "city": "Anytown",
+      "state": "CA",
+      "zipCode": "90210",
+      "country": "USA"
+    }
+  },
+  "registrationDate": "2023-01-15T10:30:00Z",
+  "lastLogin": "2024-07-09T15:00:00Z",
+  "dashboardAccessLevel": "full_access",
+  "status": "active",
+  "paymentDetails": {
+    "bankName": "Global Bank",
+    "accountNumberLast4": "4321",
+    "payoutMethod": "bank_transfer"
+  }
+}

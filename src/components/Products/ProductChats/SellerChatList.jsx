@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { db } from "../firebase";
-import { UserContext } from "../contexts/UserContext";
 
-import "../styles/chats.css";
+import { db } from "../../../firebase";
+import { UserContext } from "../../../contexts/UserContext";
+import "../../../styles/chats.css";
 
 export default function SellerChatList({
   productId,

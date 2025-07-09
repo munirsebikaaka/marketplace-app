@@ -4,6 +4,7 @@ import { UserContext } from "../contexts/UserContext";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 import "../styles/home.css";
+import userName from "../Features/UserName";
 
 const categories = [
   { id: "electronics", name: "Electronics", icon: "💻" },
@@ -64,12 +65,11 @@ function Home() {
           </div>
         ) : (
           <p className="home__welcome">
-            Welcome back, <strong>{user.displayName || user.email}</strong>!
+            Welcome, <strong>{userName(user) || user.email}</strong>!
           </p>
         )}
       </div>
 
-      {/* 🔍 Search Filters */}
       <div className="home__search">
         <input
           type="text"
@@ -111,7 +111,6 @@ function Home() {
         </button>
       </div>
 
-      {/* 📂 Categories */}
       <h2 className="section__title">Categories</h2>
       <div className="home__categories">
         {categories.map((cat) => (
@@ -122,7 +121,6 @@ function Home() {
         ))}
       </div>
 
-      {/* 🌟 Featured Products */}
       <h2 className="section__title">Featured Products</h2>
       {loading ? (
         <p className="loading">Loading products...</p>
@@ -142,8 +140,9 @@ function Home() {
                 />
                 <div className="product-card__info">
                   <h3 className="product-card__title">{product.name}</h3>
+                  <p className="product-description">{product.description}</p>
                   <p className="product-card__price">
-                    $ {product.price?.toLocaleString()}
+                    Price: ${product.price?.toLocaleString()}
                   </p>
                 </div>
               </Link>
