@@ -49,10 +49,12 @@ function Login() {
       const userCredential = await signInWithEmailAndPassword(
         auth,
         formData.email,
-        formData.password
+        formData.password,
       );
 
       const user = userCredential.user;
+
+      console.log(user);
 
       const userDoc = await getDoc(doc(db, "users", user.uid));
 
@@ -64,12 +66,14 @@ function Login() {
 
       const userData = userDoc.data();
 
-      setUser({
-        uid: user.uid,
-        ...userData,
-      });
+      console.log("userdata", userData);
 
-      navigate("/");
+      // setUser({
+      //   uid: user.uid,
+      //   ...userData,
+      // });
+
+      // navigate("/");
     } catch (err) {
       if (err.code === "auth/invalid-credential") {
         setError("Incorrect password. Please try again.");

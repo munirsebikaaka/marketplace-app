@@ -15,32 +15,32 @@ import { db } from "../firebase";
 import userName from "../Features/UserName";
 
 function SellerDashboard() {
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
 
   const [editingProduct, setEditingProduct] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user?.role !== "seller") {
-      navigate("/");
-      return;
-    }
+  // useEffect(() => {
+  //   if (user?.role !== "seller") {
+  //     navigate("/");
+  //     return;
+  //   }
 
-    const q = query(
-      collection(db, "products"),
-      where("sellerId", "==", user.uid)
-    );
+  //   const q = query(
+  //     collection(db, "products"),
+  //     where("sellerId", "==", user.uid),
+  //   );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const items = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setProducts(items);
-    });
+  //   const unsubscribe = onSnapshot(q, (snapshot) => {
+  //     const items = snapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+  //     setProducts(items);
+  //   });
 
-    return unsubscribe;
-  }, [user, navigate]);
+  //   return unsubscribe;
+  // }, [user, navigate]);
 
   const handleEdit = (product) => setEditingProduct(product);
 
@@ -52,12 +52,10 @@ function SellerDashboard() {
     <div className="seller-dashboard">
       <header className="dashboard-header">
         <h2>Seller Dashboard</h2>
-
-        <p>Welcome, {userName(user)}</p>
+        <p>Welcome...</p>
       </header>
 
       <SellerForm
-        user={user}
         editingProduct={editingProduct}
         setEditingProduct={setEditingProduct}
       />
