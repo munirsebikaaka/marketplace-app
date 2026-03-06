@@ -7,6 +7,7 @@ import Login from "./Features/Login";
 import { UserProvider } from "./contexts/UserContext";
 import { CartProvider } from "./contexts/CartContext";
 import { ProductsProvider } from "./contexts/ProductsContext";
+import SellerDashboard from "./Pages/SellerDashboard";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
             <Navbar />
             <div className="container">
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<SellerDashboard />} />
+                {/* <Route path="/" element={<Home />} /> */}
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
               </Routes>

@@ -55,10 +55,7 @@ function SellerDashboard() {
         <p>Welcome...</p>
       </header>
 
-      <SellerForm
-        editingProduct={editingProduct}
-        setEditingProduct={setEditingProduct}
-      />
+      <SellerForm />
     </div>
   );
 }

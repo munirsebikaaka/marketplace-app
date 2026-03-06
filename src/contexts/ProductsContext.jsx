@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { onSnapshot, collection } from "firebase/firestore";
-import { db } from "../firebase";
+import { getProductsHandler } from "../services/ProductServices";
 
 const ProductsContext = createContext();
 
@@ -252,16 +251,18 @@ export const ProductsProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
-      const productList = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setProducts(DAMMY_PRODUCTS);
-      setLoading(false);
-    });
+    const excuteProducts = async () => {
+      try {
+        setLoading(true);
+        const productsResponse = await getProductsHandler();
+        setProducts(productsResponse);
+        setLoading(false);
+      } catch (e) {
+        console.log("the error to consider", e);
+      }
+    };
 
-    return () => unsubscribe();
+    excuteProducts();
   }, []);
 
   return (

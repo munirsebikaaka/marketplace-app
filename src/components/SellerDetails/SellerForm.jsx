@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "../../styles/sellerDashboard.css";
+import { pushProductsHandler } from "../../services/ProductServices";
 
 const categories = [
   "Phones",
@@ -24,8 +25,6 @@ function SellerForm() {
     category: "",
     condition: "",
     location: "",
-    images: [],
-    imageFiles: [],
   });
 
   const [errors, setErrors] = useState({});
@@ -39,7 +38,6 @@ function SellerForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setIsSubmitting(true);
     const data = {
       name: formData.title.trim(),
       description: formData.description.trim(),
@@ -47,26 +45,20 @@ function SellerForm() {
       category: formData.category,
       condition: formData.condition,
       location: formData.location.trim(),
-      images: formData.images,
     };
 
-    setFormData({
-      title: "",
-      description: "",
-      price: "",
-      category: "",
-      condition: "",
-      location: "",
-      images: [],
-      imageFiles: [],
-    });
+    pushProductsHandler(data);
+
+    // setFormData({
+    //   title: "",
+    //   description: "",
+    //   price: "",
+    // });
   };
 
   return (
     <section className="seller-form-section">
-      <ToastContainer position="top-right" />
       <h2 className="form-title">Add New Product</h2>
-
       <form className="seller-form" onSubmit={handleSubmit} noValidate>
         <div className="form-group">
           <label htmlFor="title">Product Title</label>
@@ -164,8 +156,8 @@ function SellerForm() {
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="btn-submit" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Add Product"}
+          <button type="submit" className="btn-submit">
+            Add Product
           </button>
         </div>
       </form>
