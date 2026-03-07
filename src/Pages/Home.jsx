@@ -1,10 +1,9 @@
 import { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
-import { collection, onSnapshot } from "firebase/firestore";
-import { db } from "../firebase";
 import "../styles/home.css";
 import userName from "../Features/UserName";
+import { useProductsContext } from "../contexts/ProductsContext";
 
 const categories = [
   { id: "electronics", name: "Electronics", icon: "💻" },
@@ -20,25 +19,20 @@ const locations = ["Kampala", "Entebbe", "Jinja", "Mbarara"];
 
 function Home() {
   const { user } = useContext(UserContext);
+  const { products, loading } = useProductsContext();
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
-      const products = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setFeaturedProducts(products.slice(0, 4));
-      setLoading(false);
-    });
-    return unsubscribe;
-  }, []);
+    const newProducts = products?.filter(
+      (product) => product.condition === "New",
+    );
+    setFeaturedProducts(newProducts);
+  }, [products]);
 
   const handleSearch = () => {
     let query = "?";
@@ -83,8 +77,7 @@ function Home() {
         <select
           className="input input--select"
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
+          onChange={(e) => setSelectedCategory(e.target.value)}>
           <option value="">All Categories</option>
           {categories.map((cat) => (
             <option key={cat.id} value={cat.id}>
@@ -96,8 +89,7 @@ function Home() {
         <select
           className="input input--select"
           value={selectedLocation}
-          onChange={(e) => setSelectedLocation(e.target.value)}
-        >
+          onChange={(e) => setSelectedLocation(e.target.value)}>
           <option value="">All Locations</option>
           {locations.map((loc) => (
             <option key={loc} value={loc}>
@@ -130,9 +122,8 @@ function Home() {
             featuredProducts.map((product) => (
               <Link
                 to={`/product/${product.id}`}
-                key={product.id}
-                className="product-card"
-              >
+                key={product.description}
+                className="product-card">
                 <img
                   src={product.image || "def.jpg"}
                   alt={product.name}

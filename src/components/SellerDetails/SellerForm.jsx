@@ -45,6 +45,7 @@ function SellerForm() {
       category: formData.category,
       condition: formData.condition,
       location: formData.location.trim(),
+      id: `${formData.title}${Math.random() * 1000 + 99 / 0.5}${Date.now().toString()}${formData.category}`,
     };
 
     pushProductsHandler(data);

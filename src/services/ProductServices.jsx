@@ -23,7 +23,6 @@ export const getProductsHandler = async () => {
         condition: data[key].condition,
         location: data[key].location,
       };
-
       products.push(productData);
     }
   } catch (e) {

@@ -8,25 +8,32 @@ import { UserProvider } from "./contexts/UserContext";
 import { CartProvider } from "./contexts/CartContext";
 import { ProductsProvider } from "./contexts/ProductsContext";
 import SellerDashboard from "./Pages/SellerDashboard";
+import ElectronicsProducts from "./components/Products/ElectronicsProducts";
 
 function App() {
   return (
     <UserProvider>
-      <CartProvider>
-        <Router>
-          <div className="App">
-            <Navbar />
-            <div className="container">
-              <Routes>
-                <Route path="/" element={<SellerDashboard />} />
-                {/* <Route path="/" element={<Home />} /> */}
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/login" element={<Login />} />
-              </Routes>
+      <ProductsProvider>
+        <CartProvider>
+          <Router>
+            <div className="App">
+              <Navbar />
+              <div className="container">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/seller" element={<SellerDashboard />} />
+                  <Route
+                    path="/electronics"
+                    element={<ElectronicsProducts />}
+                  />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/login" element={<Login />} />
+                </Routes>
+              </div>
             </div>
-          </div>
-        </Router>
-      </CartProvider>
+          </Router>
+        </CartProvider>
+      </ProductsProvider>
     </UserProvider>
   );
 }

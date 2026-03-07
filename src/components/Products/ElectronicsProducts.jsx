@@ -10,7 +10,7 @@ const ElectronicsProducts = () => {
   const { user } = useContext(UserContext);
 
   const electronics = products?.filter(
-    (product) => product.category?.toLowerCase() === "electronics"
+    (product) => product.category?.toLowerCase() === "electronics",
   );
 
   return (
@@ -24,13 +24,6 @@ const ElectronicsProducts = () => {
           {electronics.length > 0 ? (
             electronics.map((product) => (
               <div key={product.id} className="product-card">
-                {/* Placeholder image */}
-                {/* <img
-                  src={product.imageUrl || "def.jpg"}
-                  alt={product.name}
-                  className="product-image"
-                /> */}
-
                 <img
                   src={"def.jpg"}
                   alt={"default data"}
@@ -44,7 +37,6 @@ const ElectronicsProducts = () => {
                     Price: ${product.price.toFixed(2)}
                   </p>
 
-                  {/* Show rating summary if reviews exist */}
                   {product.reviews && product.reviews.length > 0 && (
                     <div className="reviews-summary">
                       <span>
@@ -52,7 +44,7 @@ const ElectronicsProducts = () => {
                         {(
                           product.reviews.reduce(
                             (sum, review) => sum + review.rating,
-                            0
+                            0,
                           ) / product.reviews.length
                         ).toFixed(1)}
                         /5
@@ -61,21 +53,17 @@ const ElectronicsProducts = () => {
                     </div>
                   )}
 
-                  {/* Buttons for adding to cart and viewing details */}
                   <div className="product-further-links">
                     <button
                       className="btn-product btn-primary"
                       onClick={() => addToCart(product)}
-                      // Disable button if user is not logged in or user is a seller
-                      disabled={!user || user.role === "seller"}
-                    >
+                      disabled={!user || user.role === "seller"}>
                       Add to Cart
                     </button>
 
                     <Link
                       to={`/product/${product.id}`}
-                      className="view-details"
-                    >
+                      className="view-details">
                       View Details
                     </Link>
                   </div>
