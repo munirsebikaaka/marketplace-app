@@ -2,11 +2,11 @@ import axios from "axios";
 
 const PRODUCTS_URL = "https://market-place-fd898-default-rtdb.firebaseio.com/";
 
-export const pushProductsHandler = async (products) => {
+export const pushProductsHandler = async (products, setFetchErrror) => {
   try {
     await axios.post(`${PRODUCTS_URL}products.json`, products);
   } catch (e) {
-    console.log(e);
+    setFetchErrror(e.message);
   }
 };
 export const getProductsHandler = async () => {
@@ -25,9 +25,7 @@ export const getProductsHandler = async () => {
       };
       products.push(productData);
     }
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 
   return products;
 };

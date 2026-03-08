@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
 import "../../styles/sellerDashboard.css";
-import { pushProductsHandler } from "../../services/ProductServices";
+import { pushProductsHandler } from "../../services/products/ProductServices";
 
 const categories = [
   "Phones",
@@ -26,35 +25,62 @@ function SellerForm() {
     condition: "",
     location: "",
   });
-
+  const [isSubmitingProduct, setIsSubmittingProduct] = useState(false);
+  const [fetchErrror, setFetchErrror] = useState("");
   const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.title.trim()) newErrors.title = "Product title is required";
+    if (!formData.description.trim())
+      newErrors.description = "Description is required";
+    if (!formData.price || isNaN(formData.price) || Number(formData.price) <= 0)
+      newErrors.price = "Price must be a positive number";
+    if (!formData.category) newErrors.category = "Please select a category";
+    if (!formData.condition) newErrors.condition = "Please select condition";
+    if (!formData.location.trim()) newErrors.location = "Location is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = {
-      name: formData.title.trim(),
-      description: formData.description.trim(),
-      price: parseFloat(formData.price),
-      category: formData.category,
-      condition: formData.condition,
-      location: formData.location.trim(),
-      id: `${formData.title}${Math.random() * 1000 + 99 / 0.5}${Date.now().toString()}${formData.category}`,
-    };
+    if (!validateForm()) {
+      return;
+    }
 
-    pushProductsHandler(data);
+    try {
+      setIsSubmittingProduct(true);
+      const data = {
+        name: formData.title.trim(),
+        description: formData.description.trim(),
+        price: parseFloat(formData.price),
+        category: formData.category,
+        condition: formData.condition,
+        location: formData.location.trim(),
+        id: `${formData.title}${Math.random() * 1000 + 99 / 0.5}${Date.now().toString()}${formData.category}`,
+      };
+      await pushProductsHandler(data, setFetchErrror);
+      setIsSubmittingProduct(false);
+    } catch (e) {
+      console.log("error from seller form", e);
+    }
 
-    // setFormData({
-    //   title: "",
-    //   description: "",
-    //   price: "",
-    // });
+    setFormData({
+      title: "",
+      description: "",
+      price: "",
+      category: "",
+      condition: "",
+      location: "",
+    });
   };
 
   return (
@@ -63,6 +89,9 @@ function SellerForm() {
       <form className="seller-form" onSubmit={handleSubmit} noValidate>
         <div className="form-group">
           <label htmlFor="title">Product Title</label>
+          {fetchErrror && (
+            <p className="error-text">Submiting form failed: {fetchErrror}</p>
+          )}
           <input
             id="title"
             name="title"
@@ -157,8 +186,11 @@ function SellerForm() {
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="btn-submit">
-            Add Product
+          <button
+            type="submit"
+            className="btn-submit"
+            disabled={isSubmitingProduct}>
+            {isSubmitingProduct ? "" : "Add Product"}
           </button>
         </div>
       </form>

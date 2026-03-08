@@ -86,19 +86,4 @@ function RequireSeller({ children }) {
 
 // VALIDATIGING FORM
 
-// const validateForm = () => {
-//   const newErrors = {};
-
-//   if (!formData.title.trim()) newErrors.title = "Product title is required";
-//   if (!formData.description.trim())
-//     newErrors.description = "Description is required";
-//   if (!formData.price || isNaN(formData.price) || Number(formData.price) <= 0)
-//     newErrors.price = "Price must be a positive number";
-//   if (!formData.category) newErrors.category = "Please select a category";
-//   if (!formData.condition) newErrors.condition = "Please select condition";
-//   if (!formData.location.trim()) newErrors.location = "Location is required";
-//   setErrors(newErrors);
-//   return Object.keys(newErrors).length === 0;
-// };
-
 export default userName;

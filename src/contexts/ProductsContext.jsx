@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getProductsHandler } from "../services/ProductServices";
+import { getProductsHandler } from "../services/products/ProductServices";
 
 const ProductsContext = createContext();
 export const useProductsContext = () => useContext(ProductsContext);
