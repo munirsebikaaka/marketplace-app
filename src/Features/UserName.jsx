@@ -7,31 +7,6 @@ const userName = (user) => {
   return firstName;
 };
 
-{
-  /*
-                  <Route path="/products" element={<Products />} />
-                  <Route path="/product/:id" element={<ViewDetails />} />
-                  <Route path="/seller" element={<SellerDashboard />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/yourproduct" element={<YourProducts />} />
-                  <Route path="/checkout" element={<Checkout />} />
-
-                  <Route
-                    path="/electronics"
-                    element={<ElectronicsProducts />}
-                  />
-                  <Route path="/vehicles" element={<VehicleProducts />} />
-                  <Route path="/furniture" element={<FunitureProducts />} />
-                  <Route path="/properties" element={<PropertiesProducts />} />
-                  <Route path="/phones" element={<MobilePhonesProducts />} />
-                  <Route path="/fashion" element={<FashionProducts />} />
-                  <Route
-                    path="/foodAndAgriculture"
-                    element={<FoodAndAgriculture />}
-                  />
-                   */
-}
-
 function RequireNoUser({ children }) {
   const { user } = useContext(UserContext);
   if (user) {

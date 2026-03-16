@@ -1,10 +1,7 @@
 :root {
   --primary-60: #2c3e50;
-
   --secondary-30: #3498db;
-
   --accent-10: #e74c3c;
-
   --white: #ffffff;
   --light-gray: #f5f7fa;
   --medium-gray: #e0e4e8;
@@ -20,11 +17,11 @@
   --space-xl: calc(4 * var(--space-unit));
   --space-xxl: calc(6 * var(--space-unit));
 
-  --font-size-sm: 0.875rem; /* 14px */
-  --font-size-base: 1rem; /* 16px */
-  --font-size-md: 1.25rem; /* 20px */
-  --font-size-lg: 1.5rem; /* 24px */
-  --font-size-xl: 2rem; /* 32px */
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-md: 1.25rem;
+  --font-size-lg: 1.5rem;
+  --font-size-xl: 2rem;
 
   --line-height-sm: 1.25;
   --line-height-md: 1.5;
@@ -42,6 +39,7 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --error-shadow: 0 4px 6px #e74d3c8d;
 
   /* Transitions */
   --transition-fast: 0.15s ease;

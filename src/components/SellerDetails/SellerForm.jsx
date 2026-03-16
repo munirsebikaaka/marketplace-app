@@ -84,7 +84,8 @@ function SellerForm() {
   };
 
   return (
-    <section className="seller-form-section">
+    <section
+      className={`seller-form-section ${fetchErrror && "fetch-error-colors"}`}>
       <h2 className="form-title">Add New Product</h2>
       <form className="seller-form" onSubmit={handleSubmit} noValidate>
         <div className="form-group">

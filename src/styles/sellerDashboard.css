@@ -61,9 +61,7 @@
   color: var(--text-dark);
 }
 
-.form-group input[type="text"],
-.form-group input[type="number"],
-.form-group input[type="file"],
+.form-group input,
 .form-group select,
 .form-group textarea {
   font-size: var(--font-size-base);
@@ -71,7 +69,8 @@
   font-family: var(--font-family);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-md);
-  transition: border-color var(--transition-fast),
+  transition:
+    border-color var(--transition-fast),
     box-shadow var(--transition-fast);
   font-family: inherit;
   resize: vertical;
@@ -90,9 +89,14 @@ textarea {
   line-height: 1.4;
 }
 
-.input-error {
-  border-color: var(--accent-10);
+.input-error,
+.fetch-error-colors {
+  border: 1px solid var(--accent-10);
   background-color: #ffe6e6;
+}
+
+.fetch-error-colors {
+  box-shadow: var(--error-shadow);
 }
 
 .error-text {
@@ -158,8 +162,7 @@ textarea {
   margin-top: var(--space-md);
 }
 
-.btn-submit,
-.btn-cancel {
+.btn-submit {
   font-size: var(--font-size-base);
   padding: var(--space-sm) var(--space-lg);
   border-radius: var(--border-radius-md);
@@ -186,20 +189,6 @@ textarea {
   box-shadow: var(--shadow-md);
 }
 
-.btn-cancel {
-  background-color: var(--accent-10);
-}
-
-.btn-cancel:hover:not(:disabled) {
-  background-color: #d94f4f;
-  box-shadow: var(--shadow-md);
-}
-
-.btn-cancel:disabled {
-  background-color: var(--accent-40);
-  cursor: not-allowed;
-}
-
 /* Responsive */
 @media (max-width: 600px) {
   .form-actions {
@@ -207,8 +196,7 @@ textarea {
     gap: var(--space-sm);
   }
 
-  .btn-submit,
-  .btn-cancel {
+  .btn-submit {
     width: 100%;
     text-align: center;
   }
