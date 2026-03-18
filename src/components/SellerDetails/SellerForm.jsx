@@ -191,7 +191,7 @@ function SellerForm() {
             type="submit"
             className="btn-submit"
             disabled={isSubmitingProduct}>
-            {isSubmitingProduct ? "" : "Add Product"}
+            {isSubmitingProduct ? "Submitting...." : "Add Product"}
           </button>
         </div>
       </form>

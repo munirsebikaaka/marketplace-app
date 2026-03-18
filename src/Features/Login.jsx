@@ -68,12 +68,12 @@ function Login() {
 
       console.log("userdata", userData);
 
-      // setUser({
-      //   uid: user.uid,
-      //   ...userData,
-      // });
+      setUser({
+        uid: user.uid,
+        ...userData,
+      });
 
-      // navigate("/");
+      navigate("/");
     } catch (err) {
       if (err.code === "auth/invalid-credential") {
         setError("Incorrect password. Please try again.");

@@ -22,6 +22,7 @@ export const getProductsHandler = async () => {
         category: data[key].category,
         condition: data[key].condition,
         location: data[key].location,
+        id: data[key].id,
       };
       products.push(productData);
     }
