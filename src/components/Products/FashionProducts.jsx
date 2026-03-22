@@ -11,7 +11,7 @@ const FashionProducts = () => {
   const { products, loading } = useProducts();
 
   const fashion = products?.filter(
-    (product) => product.category?.toLowerCase() === "fashion"
+    (product) => product.category?.toLowerCase() === "fashion",
   );
 
   return (
@@ -25,13 +25,6 @@ const FashionProducts = () => {
           {fashion.length > 0 ? (
             fashion.map((product) => (
               <div key={product.id} className="product-card">
-                {/* Placeholder image */}
-                {/* <img
-                  src={product.imageUrl || "def.jpg"}
-                  alt={product.name}
-                  className="product-image"
-                /> */}
-
                 <img
                   src={"def.jpg"}
                   alt={"default data"}
@@ -45,7 +38,6 @@ const FashionProducts = () => {
                     Price: ${product.price.toFixed(2)}
                   </p>
 
-                  {/* Show rating summary if reviews exist */}
                   {product.reviews && product.reviews.length > 0 && (
                     <div className="reviews-summary">
                       <span>
@@ -53,7 +45,7 @@ const FashionProducts = () => {
                         {(
                           product.reviews.reduce(
                             (sum, review) => sum + review.rating,
-                            0
+                            0,
                           ) / product.reviews.length
                         ).toFixed(1)}
                         /5
@@ -68,15 +60,13 @@ const FashionProducts = () => {
                       className="btn-product btn-primary"
                       onClick={() => addToCart(product)}
                       // Disable button if user is not logged in or user is a seller
-                      disabled={!user || user.role === "seller"}
-                    >
+                      disabled={!user || user.role === "seller"}>
                       Add to Cart
                     </button>
 
                     <Link
                       to={`/product/${product.id}`}
-                      className="view-details"
-                    >
+                      className="view-details">
                       View Details
                     </Link>
                   </div>
