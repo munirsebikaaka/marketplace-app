@@ -25,13 +25,38 @@ function SellerForm() {
     condition: "",
     location: "",
   });
-  const [isSubmitingProduct, setIsSubmittingProduct] = useState(false);
-  const [fetchErrror, setFetchErrror] = useState("");
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [isSubmittingProduct, setIsSubmittingProduct] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const readFileAsDataUrl = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files || []);
+    const selectedFiles = files.slice(0, 6);
+    const previews = await Promise.all(
+      selectedFiles.map(async (file) => ({
+        name: file.name,
+        src: await readFileAsDataUrl(file),
+      })),
+    );
+    setImagePreviews((prev) => [...prev, ...previews].slice(0, 6));
+  };
+
+  const removeImage = (index) => {
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   const validateForm = () => {
@@ -45,6 +70,8 @@ function SellerForm() {
     if (!formData.category) newErrors.category = "Please select a category";
     if (!formData.condition) newErrors.condition = "Please select condition";
     if (!formData.location.trim()) newErrors.location = "Location is required";
+    if (imagePreviews.length < 2)
+      newErrors.images = "Please upload at least 2 product images.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -58,6 +85,7 @@ function SellerForm() {
 
     try {
       setIsSubmittingProduct(true);
+      setSubmitError("");
       const data = {
         name: formData.title.trim(),
         description: formData.description.trim(),
@@ -65,33 +93,37 @@ function SellerForm() {
         category: formData.category,
         condition: formData.condition,
         location: formData.location.trim(),
+        images: imagePreviews.map((preview) => preview.src),
+        imageUrl: imagePreviews[0]?.src || null,
         id: `${formData.title}${Math.random() * 1000 + 99 / 0.5}${Date.now().toString()}${formData.category}`,
       };
-      await pushProductsHandler(data, setFetchErrror);
-      setIsSubmittingProduct(false);
+      await pushProductsHandler(data);
+      setFormData({
+        title: "",
+        description: "",
+        price: "",
+        category: "",
+        condition: "",
+        location: "",
+      });
+      setImagePreviews([]);
+      setErrors({});
     } catch (e) {
-      console.log("error from seller form", e);
+      setSubmitError(e.message || "Submission failed. Please try again.");
+    } finally {
+      setIsSubmittingProduct(false);
     }
-
-    setFormData({
-      title: "",
-      description: "",
-      price: "",
-      category: "",
-      condition: "",
-      location: "",
-    });
   };
 
   return (
     <section
-      className={`seller-form-section ${fetchErrror && "fetch-error-colors"}`}>
+      className={`seller-form-section ${submitError && "fetch-error-colors"}`}>
       <h2 className="form-title">Add New Product</h2>
       <form className="seller-form" onSubmit={handleSubmit} noValidate>
         <div className="form-group">
           <label htmlFor="title">Product Title</label>
-          {fetchErrror && (
-            <p className="error-text">Submiting form failed: {fetchErrror}</p>
+          {submitError && (
+            <p className="error-text">Submitting form failed: {submitError}</p>
           )}
           <input
             id="title"
@@ -186,12 +218,44 @@ function SellerForm() {
           {errors.location && <p className="error-text">{errors.location}</p>}
         </div>
 
+        <div className="form-group">
+          <label htmlFor="images">Product Images</label>
+          <input
+            id="images"
+            name="images"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleImageUpload}
+            className={errors.images ? "input-error" : ""}
+          />
+          <small className="helper-text">
+            Upload at least 2 images (recommended 3). Thumbnails appear below.
+          </small>
+          {errors.images && <p className="error-text">{errors.images}</p>}
+          {imagePreviews.length > 0 && (
+            <div className="image-preview-container">
+              {imagePreviews.map((image, index) => (
+                <div className="image-preview" key={`${image.name}-${index}`}>
+                  <img src={image.src} alt={`Preview ${index + 1}`} />
+                  <button
+                    type="button"
+                    className="btn-remove-image"
+                    onClick={() => removeImage(index)}>
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="form-actions">
           <button
             type="submit"
             className="btn-submit"
-            disabled={isSubmitingProduct}>
-            {isSubmitingProduct ? "Submitting...." : "Add Product"}
+            disabled={isSubmittingProduct}>
+            {isSubmittingProduct ? "Submitting..." : "Add Product"}
           </button>
         </div>
       </form>

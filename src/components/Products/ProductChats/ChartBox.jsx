@@ -10,10 +10,10 @@ import {
 } from "firebase/firestore";
 
 import { db } from "../../../firebase";
-import { UserContext } from "../../../contexts/UserContext";
+import { useUserContext } from "../../../contexts/UserContext";
 
 export default function ChatBox({ chatId }) {
-  const { user } = useContext(UserContext);
+  const { user } = useUserContext();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
@@ -28,7 +28,7 @@ export default function ChatBox({ chatId }) {
     const q = query(
       messagesRef,
       where("chatId", "==", chatId),
-      orderBy("createdAt", "asc")
+      orderBy("createdAt", "asc"),
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -85,8 +85,7 @@ export default function ChatBox({ chatId }) {
               className={`message ${isSentByCurrentUser ? "sent" : "received"}`}
               aria-label={`${
                 isSentByCurrentUser ? "Sent" : "Received"
-              } message: ${text}`}
-            >
+              } message: ${text}`}>
               {text}
               <div className="message-time">{formatTime(createdAt)}</div>
             </div>
@@ -108,8 +107,7 @@ export default function ChatBox({ chatId }) {
         <button
           type="submit"
           className="chat-send-button"
-          disabled={!input.trim()}
-        >
+          disabled={!input.trim()}>
           Send
         </button>
       </form>

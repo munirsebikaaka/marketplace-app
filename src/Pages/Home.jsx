@@ -1,9 +1,10 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../contexts/UserContext";
 import "../styles/home.css";
 import userName from "../Features/UserName";
 import { useProductsContext } from "../contexts/ProductsContext";
+import ImageGallery from "../components/Products/ImageGallery";
+import { useUserContext } from "../contexts/UserContext";
 
 const categories = [
   { id: "electronics", name: "Electronics", icon: "💻" },
@@ -18,8 +19,8 @@ const categories = [
 const locations = ["Kampala", "Entebbe", "Jinja", "Mbarara"];
 
 function Home() {
-  const { user } = useContext(UserContext);
-  const { products, loading } = useProductsContext();
+  const { user } = useUserContext();
+  const { products, loading, error, refetch } = useProductsContext();
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -116,6 +117,13 @@ function Home() {
       <h2 className="section__title">Featured Products</h2>
       {loading ? (
         <p className="loading">Loading products...</p>
+      ) : error ? (
+        <div className="error-message">
+          <p>{error}</p>
+          <button className="btn btn--secondary" onClick={refetch}>
+            Retry
+          </button>
+        </div>
       ) : (
         <div className="home__products">
           {featuredProducts.length > 0 ? (
@@ -124,10 +132,17 @@ function Home() {
                 to={`/product/${product.id}`}
                 key={product.description}
                 className="product-card">
-                <img
-                  src={product.image || "def.jpg"}
+                <ImageGallery
+                  images={
+                    product.images?.length > 0
+                      ? product.images
+                      : product.imageUrl
+                        ? [product.imageUrl]
+                        : product.image
+                          ? [product.image]
+                          : ["def.jpg"]
+                  }
                   alt={product.name}
-                  className="product-card__image"
                 />
                 <div className="product-card__info">
                   <h3 className="product-card__title">{product.name}</h3>

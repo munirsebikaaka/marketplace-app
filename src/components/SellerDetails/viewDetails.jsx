@@ -1,27 +1,38 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { UserContext } from "../../contexts/UserContext";
 import { CartContext } from "../../contexts/CartContext";
 import "../../styles/viewDetails.css";
 import ProductChatManager from "../Products/ProductChats/ProductChatManager";
 import RelatedDetailedProducts from "../Products/RelatedDetailedProducts";
+import ImageGallery from "../Products/ImageGallery";
 import { useProductsContext } from "../../contexts/ProductsContext";
+import { useUserContext } from "../../contexts/UserContext";
 
 export default function ViewDetails() {
   const { id } = useParams();
-  const { user } = useContext(UserContext);
+  const { user } = useUserContext();
   const { addToCart } = useContext(CartContext);
-  const { products } = useProductsContext();
+  const { products, loading, error, refetch } = useProductsContext();
   const [product, setProduct] = useState(null);
   const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
-    const selectedProduct = products.find((p) => p.id === id);
+    const selectedProduct = products?.find((p) => p.id === id);
     setProduct(selectedProduct);
-  }, [id]);
+  }, [id, products]);
 
   const productCategory = product?.category.toLowerCase();
 
+  if (loading) return <p>Loading product...</p>;
+  if (error)
+    return (
+      <div className="error-message">
+        <p>{error}</p>
+        <button className="btn btn--secondary" onClick={refetch}>
+          Retry
+        </button>
+      </div>
+    );
   if (!product) return <p className="not-found">Product not found.</p>;
 
   return (
@@ -30,10 +41,17 @@ export default function ViewDetails() {
         <>
           <div className="product-details">
             <div className="product-image-section">
-              <img
-                src={product.imageUrl || "/def.jpg"}
+              <ImageGallery
+                images={
+                  product.images?.length > 0
+                    ? product.images
+                    : product.imageUrl
+                      ? [product.imageUrl]
+                      : product.image
+                        ? [product.image]
+                        : ["def.jpg"]
+                }
                 alt={product.name}
-                className="product-detail-image"
               />
             </div>
 

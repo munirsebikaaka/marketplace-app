@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 
 import { db } from "../../../firebase";
-import { UserContext } from "../../../contexts/UserContext";
 import "../../../styles/chats.css";
+import { useUserContext } from "../../../contexts/UserContext";
 
 export default function SellerChatList({
   productId,
@@ -11,7 +11,7 @@ export default function SellerChatList({
   onSelectChat,
   onSetShowChat,
 }) {
-  const { user } = useContext(UserContext);
+  const { user } = useUserContext();
   const [chats, setChats] = useState([]);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function SellerChatList({
     const q = query(
       chatsRef,
       where("sellerId", "==", user.uid),
-      where("productId", "==", productId)
+      where("productId", "==", productId),
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -69,8 +69,7 @@ export default function SellerChatList({
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === "Enter") onSelectChat(id);
-            }}
-          >
+            }}>
             <div className="avatar">{getInitials(buyerId)}</div>
             {/* <div className="chat-info">
               <div className="chat-name">{buyerId}</div>

@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import "../styles/navbar.css";
 import { IoClose, IoMenu } from "react-icons/io5";
-import { useState, useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
+import { useContext, useState } from "react";
+import { useUserContext } from "../contexts/UserContext";
 import { CartContext } from "../contexts/CartContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const { user, handleLogout } = useContext(UserContext);
+  const { user, handleLogout } = useUserContext();
   const { cart } = useContext(CartContext);
   const cartCount =
     cart?.reduce((total, item) => total + item.quantity, 0) || 0;
@@ -51,7 +51,9 @@ const Navbar = () => {
             Cart ({cartCount})
           </Link>
 
-          <button className="logout-btn">Logout</button>
+          <button className="logout-btn" onClick={onLogoutClick}>
+            Logout
+          </button>
 
           <Link className="link" to="/login" onClick={handleMenuClose}>
             Login

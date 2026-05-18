@@ -1,16 +1,17 @@
 import { useContext } from "react";
 
-import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
 import { useProducts } from "../../contexts/ProductsContext";
+import ImageGallery from "../Products/ImageGallery";
 import Spinner from "../../Features/Spiner";
+import { useUserContext } from "../../contexts/UserContext";
 
 function YourProducts() {
-  const { user } = useContext(UserContext);
-  const { products, loading } = useProducts();
+  const { user } = useUserContext();
+  const { products, loading, error, refetch } = useProducts();
 
   const filteredProducts = products?.filter(
-    (product) => product.sellerId === user?.uid
+    (product) => product.sellerId === user?.uid,
   );
 
   return (
@@ -19,15 +20,29 @@ function YourProducts() {
 
       {loading ? (
         <Spinner />
+      ) : error ? (
+        <div className="error-message">
+          <p>{error}</p>
+          <button className="btn btn--secondary" onClick={refetch}>
+            Retry
+          </button>
+        </div>
       ) : (
         <div className="products-grid">
           {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
             filteredProducts.map((p) => (
               <div key={p.id} className="product-card">
-                <img
-                  src={p.image || "def.jpg"}
+                <ImageGallery
+                  images={
+                    p.images?.length > 0
+                      ? p.images
+                      : p.imageUrl
+                        ? [p.imageUrl]
+                        : p.image
+                          ? [p.image]
+                          : ["def.jpg"]
+                  }
                   alt={p.name || "Product Image"}
-                  className="product-image"
                 />
                 <div className="seller-product-card">
                   <h4 className="product-title">{p.name}</h4>

@@ -2,11 +2,12 @@ import axios from "axios";
 
 const PRODUCTS_URL = "https://market-place-fd898-default-rtdb.firebaseio.com/";
 
-export const pushProductsHandler = async (products, setFetchErrror) => {
+export const pushProductsHandler = async (product) => {
   try {
-    await axios.post(`${PRODUCTS_URL}products.json`, products);
+    await axios.post(`${PRODUCTS_URL}products.json`, product);
   } catch (e) {
-    setFetchErrror(e.message);
+    console.error("Product upload failed:", e);
+    throw new Error(e.message || "Unable to submit product.");
   }
 };
 export const getProductsHandler = async () => {
@@ -23,10 +24,16 @@ export const getProductsHandler = async () => {
         condition: data[key].condition,
         location: data[key].location,
         id: data[key].id,
+        images: data[key].images || [],
+        imageUrl: data[key].imageUrl || data[key].image || null,
+        sellerId: data[key].sellerId || null,
+        reviews: data[key].reviews || [],
       };
       products.push(productData);
     }
-  } catch (e) {}
-
-  return products;
+    return products;
+  } catch (e) {
+    console.error("Products fetch failed:", e);
+    throw new Error("Unable to load products. Please try again later.");
+  }
 };

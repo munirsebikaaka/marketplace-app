@@ -59,6 +59,4 @@ function RequireSeller({ children }) {
 //   setErrors({});
 // }, [editingProduct]);
 
-// VALIDATIGING FORM
-
 export default userName;

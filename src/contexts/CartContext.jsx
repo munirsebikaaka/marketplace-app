@@ -1,13 +1,12 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
-
-import { UserContext } from "./UserContext";
 import { db } from "../firebase";
+import { useUserContext } from "./UserContext";
 
 export const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  const { user } = useContext(UserContext);
+  const { user } = useUserContext();
   const [cart, setCart] = useState([]);
   const [loadingCart, setLoadingCart] = useState(true);
 
@@ -73,8 +72,8 @@ export function CartProvider({ children }) {
         cart.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
+            : item,
+        ),
       );
     } else {
       setCart([...cart, { ...product, quantity: 1 }]);
@@ -92,7 +91,9 @@ export function CartProvider({ children }) {
     }
 
     setCart(
-      cart.map((item) => (item.id === productId ? { ...item, quantity } : item))
+      cart.map((item) =>
+        item.id === productId ? { ...item, quantity } : item,
+      ),
     );
   };
 
@@ -109,8 +110,7 @@ export function CartProvider({ children }) {
         removeFromCart,
         updateQuantity,
         clearCart,
-      }}
-    >
+      }}>
       {children}
     </CartContext.Provider>
   );

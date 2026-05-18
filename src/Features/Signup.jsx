@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -6,7 +6,7 @@ import { auth, db } from "../firebase";
 import "../styles/auth.css";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import Spinner from "./Spiner";
-import { UserContext } from "../contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -21,7 +21,7 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const { setUser } = useContext(UserContext);
+  const { handleLogin } = useUserContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,14 +83,14 @@ function Signup() {
       });
 
       // Update global user state in context
-      setUser({
+      handleLogin({
         uid: user.uid,
         name: formData.name,
         email: formData.email,
         role: formData.role,
       });
 
-      // navigate("/");
+      navigate("/");
     } catch (err) {
       console.error("Signup Error:", err.code);
       setError(getFriendlyError(err.code));

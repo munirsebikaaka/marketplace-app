@@ -89,6 +89,12 @@ textarea {
   line-height: 1.4;
 }
 
+.helper-text {
+  font-size: 0.9rem;
+  color: var(--secondary-30);
+  margin-top: 0.25rem;
+}
+
 .input-error,
 .fetch-error-colors {
   border: 1px solid var(--accent-10);

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import {
@@ -13,7 +13,7 @@ import { auth, db } from "../firebase";
 import "../styles/auth.css";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import Spinner from "./Spiner";
-import { UserContext } from "../contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -23,7 +23,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const { setUser } = useContext(UserContext);
+  const { handleLogin } = useUserContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,8 +54,6 @@ function Login() {
 
       const user = userCredential.user;
 
-      console.log(user);
-
       const userDoc = await getDoc(doc(db, "users", user.uid));
 
       if (!userDoc.exists()) {
@@ -66,9 +64,7 @@ function Login() {
 
       const userData = userDoc.data();
 
-      console.log("userdata", userData);
-
-      setUser({
+      handleLogin({
         uid: user.uid,
         ...userData,
       });

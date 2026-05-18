@@ -11,10 +11,10 @@ import {
 import ChatBox from "./ChartBox";
 
 import { db } from "../../../firebase";
-import { UserContext } from "../../../contexts/UserContext";
+import { useUserContext } from "../../../contexts/UserContext";
 
 export default function BuyerChat({ sellerId, productId }) {
-  const { user } = useContext(UserContext);
+  const { user } = useUserContext();
   const [chatId, setChatId] = useState(null);
   const [input, setInput] = useState("");
 
@@ -26,7 +26,7 @@ export default function BuyerChat({ sellerId, productId }) {
         collection(db, "chats"),
         where("buyerId", "==", user.uid),
         where("sellerId", "==", sellerId),
-        where("productId", "==", productId)
+        where("productId", "==", productId),
       );
 
       const chatSnapshot = await getDocs(chatQuery);

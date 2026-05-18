@@ -2,14 +2,15 @@ import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import "../styles/products.css";
 
-import { UserContext } from "../contexts/UserContext";
 import { CartContext } from "../contexts/CartContext";
 import { useProducts } from "../contexts/ProductsContext";
+import ImageGallery from "../components/Products/ImageGallery";
+import { useUserContext } from "../contexts/UserContext";
 
 function Products() {
-  const { user } = useContext(UserContext);
+  const { user } = useUserContext();
   const { addToCart } = useContext(CartContext);
-  const { products, loading } = useProducts();
+  const { products, loading, error, refetch } = useProducts();
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredProducts = products.filter(
@@ -32,15 +33,29 @@ function Products() {
 
       {loading ? (
         <p>Loading products...</p>
+      ) : error ? (
+        <div className="error-message">
+          <p>{error}</p>
+          <button className="btn btn--secondary" onClick={refetch}>
+            Retry
+          </button>
+        </div>
       ) : (
         <div className="products-grid">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <div key={product.id} className="product-card">
-                <img
-                  src={"def.jpg"}
-                  alt={"default data"}
-                  className="product-image"
+                <ImageGallery
+                  images={
+                    product.images?.length > 0
+                      ? product.images
+                      : product.imageUrl
+                        ? [product.imageUrl]
+                        : product.image
+                          ? [product.image]
+                          : ["def.jpg"]
+                  }
+                  alt={product.name}
                 />
 
                 <div className="seller-product-card">
