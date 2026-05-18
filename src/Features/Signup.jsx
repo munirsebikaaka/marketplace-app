@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -6,7 +6,7 @@ import { auth, db } from "../firebase";
 import "../styles/auth.css";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import Spinner from "./Spiner";
-import { UserContext } from "../contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -21,7 +21,7 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const { setUser } = useContext(UserContext); // Get setUser from context
+  const { handleLogin } = useUserContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,6 +40,9 @@ function Signup() {
     }
     if (code === "auth/weak-password") {
       return "Password should be at least 6 characters.";
+    }
+    if (code === "auth/network-request-failed") {
+      return "Sign up failed: Check your internet.";
     }
     return "Something went wrong. Please try again.";
   };
@@ -68,7 +71,7 @@ function Signup() {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
-        formData.password
+        formData.password,
       );
       const user = userCredential.user;
 
@@ -80,16 +83,16 @@ function Signup() {
       });
 
       // Update global user state in context
-      setUser({
+      handleLogin({
         uid: user.uid,
         name: formData.name,
         email: formData.email,
         role: formData.role,
       });
 
-      navigate("/"); // Redirect after signup
+      navigate("/");
     } catch (err) {
-      // console.error("Signup Error:", err.message);
+      console.error("Signup Error:", err.code);
       setError(getFriendlyError(err.code));
     }
 
@@ -161,8 +164,7 @@ function Signup() {
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
-                className="form-input"
-              >
+                className="form-input">
                 <option value="buyer">Buyer</option>
                 <option value="seller">Seller</option>
               </select>

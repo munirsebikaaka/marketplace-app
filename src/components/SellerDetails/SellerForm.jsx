@@ -1,9 +1,6 @@
-import { useState, useEffect, useContext } from "react";
-import { addDoc, updateDoc, collection, doc } from "firebase/firestore";
-import { db } from "../../firebase";
-import { toast, ToastContainer } from "react-toastify";
+import { useState } from "react";
 import "../../styles/sellerDashboard.css";
-import { UserContext } from "../../contexts/UserContext";
+import { pushProductsHandler } from "../../services/products/ProductServices";
 
 const categories = [
   "Phones",
@@ -19,9 +16,7 @@ const categories = [
 
 const conditions = ["New", "Used"];
 
-function SellerForm({ editingProduct, setEditingProduct }) {
-  const { user } = useContext(UserContext);
-
+function SellerForm() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -29,64 +24,39 @@ function SellerForm({ editingProduct, setEditingProduct }) {
     category: "",
     condition: "",
     location: "",
-    images: [],
-    imageFiles: [],
   });
-
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [isSubmittingProduct, setIsSubmittingProduct] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (editingProduct) {
-      setFormData({
-        title: editingProduct.name || "",
-        description: editingProduct.description || "",
-        price: editingProduct.price ? editingProduct.price.toString() : "",
-        category: editingProduct.category || "",
-        condition: editingProduct.condition || "",
-        location: editingProduct.location || "",
-        images: editingProduct.images || [],
-        imageFiles: [],
-      });
-    } else {
-      setFormData({
-        title: "",
-        description: "",
-        price: "",
-        category: "",
-        condition: "",
-        location: "",
-        images: [],
-        imageFiles: [],
-      });
-    }
-    setErrors({});
-  }, [editingProduct]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    const newPreviews = files.map((file) => URL.createObjectURL(file));
+  const readFileAsDataUrl = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
 
-    setFormData((prev) => ({
-      ...prev,
-      images: [...prev.images, ...newPreviews],
-      imageFiles: [...prev.imageFiles, ...files],
-    }));
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files || []);
+    const selectedFiles = files.slice(0, 6);
+    const previews = await Promise.all(
+      selectedFiles.map(async (file) => ({
+        name: file.name,
+        src: await readFileAsDataUrl(file),
+      })),
+    );
+    setImagePreviews((prev) => [...prev, ...previews].slice(0, 6));
   };
 
   const removeImage = (index) => {
-    setFormData((prev) => {
-      const newImages = [...prev.images];
-      const newFiles = [...prev.imageFiles];
-      newImages.splice(index, 1);
-      newFiles.splice(index, 1);
-      return { ...prev, images: newImages, imageFiles: newFiles };
-    });
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   const validateForm = () => {
@@ -100,18 +70,22 @@ function SellerForm({ editingProduct, setEditingProduct }) {
     if (!formData.category) newErrors.category = "Please select a category";
     if (!formData.condition) newErrors.condition = "Please select condition";
     if (!formData.location.trim()) newErrors.location = "Location is required";
-    // if (formData.images.length === 0)
-    //   newErrors.images = "At least one image is required";
+    if (imagePreviews.length < 2)
+      newErrors.images = "Please upload at least 2 product images.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
-    try {
-      setIsSubmitting(true);
 
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      setIsSubmittingProduct(true);
+      setSubmitError("");
       const data = {
         name: formData.title.trim(),
         description: formData.description.trim(),
@@ -119,18 +93,11 @@ function SellerForm({ editingProduct, setEditingProduct }) {
         category: formData.category,
         condition: formData.condition,
         location: formData.location.trim(),
-        images: formData.images,
-        sellerId: user.uid,
-        sellerName: user.name,
+        images: imagePreviews.map((preview) => preview.src),
+        imageUrl: imagePreviews[0]?.src || null,
+        id: `${formData.title}${Math.random() * 1000 + 99 / 0.5}${Date.now().toString()}${formData.category}`,
       };
-
-      if (editingProduct) {
-        await updateDoc(doc(db, "products", editingProduct.id), data);
-      } else {
-        await addDoc(collection(db, "products"), data);
-        toast.success("Your Produt is being posted succefully!");
-      }
-
+      await pushProductsHandler(data);
       setFormData({
         title: "",
         description: "",
@@ -138,27 +105,26 @@ function SellerForm({ editingProduct, setEditingProduct }) {
         category: "",
         condition: "",
         location: "",
-        images: [],
-        imageFiles: [],
       });
-      setEditingProduct(null);
-    } catch (error) {
-      toast.error("Error: " + error.message);
+      setImagePreviews([]);
+      setErrors({});
+    } catch (e) {
+      setSubmitError(e.message || "Submission failed. Please try again.");
     } finally {
-      setIsSubmitting(false);
+      setIsSubmittingProduct(false);
     }
   };
 
   return (
-    <section className="seller-form-section">
-      <ToastContainer position="top-right" />
-      <h2 className="form-title">
-        {editingProduct ? "Edit Your Product" : "Add New Product"}
-      </h2>
-
+    <section
+      className={`seller-form-section ${submitError && "fetch-error-colors"}`}>
+      <h2 className="form-title">Add New Product</h2>
       <form className="seller-form" onSubmit={handleSubmit} noValidate>
         <div className="form-group">
           <label htmlFor="title">Product Title</label>
+          {submitError && (
+            <p className="error-text">Submitting form failed: {submitError}</p>
+          )}
           <input
             id="title"
             name="title"
@@ -209,8 +175,7 @@ function SellerForm({ editingProduct, setEditingProduct }) {
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className={errors.category ? "input-error" : ""}
-          >
+            className={errors.category ? "input-error" : ""}>
             <option value="">-- Select Category --</option>
             {categories.map((cat) => (
               <option key={cat} value={cat}>
@@ -228,8 +193,7 @@ function SellerForm({ editingProduct, setEditingProduct }) {
             name="condition"
             value={formData.condition}
             onChange={handleChange}
-            className={errors.condition ? "input-error" : ""}
-          >
+            className={errors.condition ? "input-error" : ""}>
             <option value="">-- Select Condition --</option>
             {conditions.map((cond) => (
               <option key={cond} value={cond}>
@@ -262,49 +226,37 @@ function SellerForm({ editingProduct, setEditingProduct }) {
             type="file"
             accept="image/*"
             multiple
-            onChange={handleImageChange}
+            onChange={handleImageUpload}
             className={errors.images ? "input-error" : ""}
           />
+          <small className="helper-text">
+            Upload at least 2 images (recommended 3). Thumbnails appear below.
+          </small>
           {errors.images && <p className="error-text">{errors.images}</p>}
-
-          <div className="image-preview-container">
-            {formData.images.map((src, index) => (
-              <div key={index} className="image-preview">
-                <img src={src} alt={`Preview ${index + 1}`} />
-                <button
-                  type="button"
-                  className="btn-remove-image"
-                  onClick={() => removeImage(index)}
-                  title="Remove image"
-                >
-                  &times;
-                </button>
-              </div>
-            ))}
-          </div>
+          {imagePreviews.length > 0 && (
+            <div className="image-preview-container">
+              {imagePreviews.map((image, index) => (
+                <div className="image-preview" key={`${image.name}-${index}`}>
+                  <img src={image.src} alt={`Preview ${index + 1}`} />
+                  <button
+                    type="button"
+                    className="btn-remove-image"
+                    onClick={() => removeImage(index)}>
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="btn-submit" disabled={isSubmitting}>
-            {isSubmitting
-              ? editingProduct
-                ? "Updating..."
-                : "Submitting..."
-              : editingProduct
-              ? "Update Product"
-              : "Add Product"}
+          <button
+            type="submit"
+            className="btn-submit"
+            disabled={isSubmittingProduct}>
+            {isSubmittingProduct ? "Submitting..." : "Add Product"}
           </button>
-
-          {editingProduct && (
-            <button
-              type="button"
-              className="btn-cancel"
-              onClick={() => setEditingProduct(null)}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </button>
-          )}
         </div>
       </form>
     </section>

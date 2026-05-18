@@ -1,17 +1,21 @@
 import { useContext } from "react";
 
-import { UserContext } from "../../contexts/UserContext";
+import { CartContext } from "../../contexts/CartContext";
+
 import { Link } from "react-router-dom";
 
 import { useProducts } from "../../contexts/ProductsContext";
+import ImageGallery from "./ImageGallery";
 import Spinner from "../../Features/Spiner";
+import { useUserContext } from "../../contexts/UserContext";
 
 const FoodAndAgriculture = () => {
-  const { user } = useContext(UserContext);
-  const { products, loading } = useProducts();
+  const { addToCart } = useContext(CartContext);
+  const { user } = useUserContext();
+  const { products, loading, error, refetch } = useProducts();
 
   const foodAndAgriculture = products?.filter(
-    (product) => product.category?.toLowerCase() === "foodAndAgriculture"
+    (product) => product.category?.toLowerCase() === "foodAndAgriculture",
   );
 
   return (
@@ -20,22 +24,29 @@ const FoodAndAgriculture = () => {
 
       {loading ? (
         <Spinner />
+      ) : error ? (
+        <div className="error-message">
+          <p>{error}</p>
+          <button className="btn btn--secondary" onClick={refetch}>
+            Retry
+          </button>
+        </div>
       ) : (
         <div className="products-grid">
           {foodAndAgriculture.length > 0 ? (
             foodAndAgriculture.map((product) => (
               <div key={product.id} className="product-card">
-                {/* Placeholder image */}
-                {/* <img
-                  src={product.imageUrl || "def.jpg"}
+                <ImageGallery
+                  images={
+                    product.images?.length > 0
+                      ? product.images
+                      : product.imageUrl
+                        ? [product.imageUrl]
+                        : product.image
+                          ? [product.image]
+                          : ["def.jpg"]
+                  }
                   alt={product.name}
-                  className="product-image"
-                /> */}
-
-                <img
-                  src={"def.jpg"}
-                  alt={"default data"}
-                  className="product-image"
                 />
 
                 <div className="seller-product-card">
@@ -45,7 +56,6 @@ const FoodAndAgriculture = () => {
                     Price: ${product.price.toFixed(2)}
                   </p>
 
-                  {/* Show rating summary if reviews exist */}
                   {product.reviews && product.reviews.length > 0 && (
                     <div className="reviews-summary">
                       <span>
@@ -53,7 +63,7 @@ const FoodAndAgriculture = () => {
                         {(
                           product.reviews.reduce(
                             (sum, review) => sum + review.rating,
-                            0
+                            0,
                           ) / product.reviews.length
                         ).toFixed(1)}
                         /5
@@ -62,21 +72,17 @@ const FoodAndAgriculture = () => {
                     </div>
                   )}
 
-                  {/* Buttons for adding to cart and viewing details */}
                   <div className="product-further-links">
                     <button
                       className="btn-product btn-primary"
                       onClick={() => addToCart(product)}
-                      // Disable button if user is not logged in or user is a seller
-                      disabled={!user || user.role === "seller"}
-                    >
+                      disabled={!user || user.role === "seller"}>
                       Add to Cart
                     </button>
 
                     <Link
                       to={`/product/${product.id}`}
-                      className="view-details"
-                    >
+                      className="view-details">
                       View Details
                     </Link>
                   </div>
@@ -86,7 +92,6 @@ const FoodAndAgriculture = () => {
           ) : (
             <p>
               No products found.{" "}
-              {/* If user is a seller, suggest adding products */}
               {user?.role === "seller" && (
                 <Link to="/seller">Add some products</Link>
               )}

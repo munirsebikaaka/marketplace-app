@@ -2,20 +2,21 @@ import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import "../styles/products.css";
 
-import { UserContext } from "../contexts/UserContext";
 import { CartContext } from "../contexts/CartContext";
 import { useProducts } from "../contexts/ProductsContext";
+import ImageGallery from "../components/Products/ImageGallery";
+import { useUserContext } from "../contexts/UserContext";
 
 function Products() {
-  const { user } = useContext(UserContext);
+  const { user } = useUserContext();
   const { addToCart } = useContext(CartContext);
-  const { products, loading } = useProducts();
+  const { products, loading, error, refetch } = useProducts();
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredProducts = products.filter(
     (product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase())
+      product.description.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -32,22 +33,29 @@ function Products() {
 
       {loading ? (
         <p>Loading products...</p>
+      ) : error ? (
+        <div className="error-message">
+          <p>{error}</p>
+          <button className="btn btn--secondary" onClick={refetch}>
+            Retry
+          </button>
+        </div>
       ) : (
         <div className="products-grid">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <div key={product.id} className="product-card">
-                {/* Placeholder image */}
-                {/* <img
-                  src={product.imageUrl || "def.jpg"}
+                <ImageGallery
+                  images={
+                    product.images?.length > 0
+                      ? product.images
+                      : product.imageUrl
+                        ? [product.imageUrl]
+                        : product.image
+                          ? [product.image]
+                          : ["def.jpg"]
+                  }
                   alt={product.name}
-                  className="product-image"
-                /> */}
-
-                <img
-                  src={"def.jpg"}
-                  alt={"default data"}
-                  className="product-image"
                 />
 
                 <div className="seller-product-card">
@@ -64,7 +72,7 @@ function Products() {
                         {(
                           product.reviews.reduce(
                             (sum, review) => sum + review.rating,
-                            0
+                            0,
                           ) / product.reviews.length
                         ).toFixed(1)}
                         /5
@@ -77,15 +85,13 @@ function Products() {
                     <button
                       className="btn-product btn-primary"
                       onClick={() => addToCart(product)}
-                      disabled={!user || user.role === "seller"}
-                    >
+                      disabled={!user || user.role === "seller"}>
                       Add to Cart
                     </button>
 
                     <Link
                       to={`/product/${product.id}`}
-                      className="view-details"
-                    >
+                      className="view-details">
                       View Details
                     </Link>
                   </div>

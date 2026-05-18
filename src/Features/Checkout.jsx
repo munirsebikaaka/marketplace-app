@@ -7,7 +7,6 @@ import { CartContext } from "../contexts/CartContext";
 
 function Checkout() {
   const { user } = useContext(UserContext);
-
   const { cart, clearCart } = useContext(CartContext);
 
   const [formData, setFormData] = useState({
